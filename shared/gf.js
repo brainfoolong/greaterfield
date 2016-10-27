@@ -3,7 +3,7 @@
 var gf = {
 
     // the api url
-    api: "http://localhost/gf",
+    api: "https://localhost/gf",
     // the current version
     version: null,
     // the shared folder to access extension files
@@ -139,7 +139,7 @@ var gf = {
                                             <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/${dir.name}/screenshot.jpg"></div>
                                             <div class="column">
                                                 <div class="title"><div class="toggle ${cl}" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
-                                                <div class="author">${manifest.author}</div>
+                                                <div class="author">Author: ${manifest.author}</div>
                                                 <div class="description">${manifest.description}</div>
                                             </div>
                                         </div>
@@ -206,16 +206,20 @@ var gf = {
 
                     // create for each section block
                     gf.tools.each(sections, function (k, sectionId) {
-                        var section = $(`<div class="section"><div class="title">${sectionId}</div></div>`);
+                        var section = $(`<div class="section"><div class="title">${gf.translations.get("action.config.section." + sectionId)}</div></div>`);
                         menu.append(section);
                         gf.tools.each(gf.actions._config, function (k, v) {
                             if (v.section == sectionId) {
-                                var html = k;
+                                var html = gf.translations.get("action.config." + k);
                                 if (typeof gf.actions.configHandlers[k] == "function") {
-                                    html = $('<button class="btn">' + html + '</button>');
+                                    html = $('<span class="gf-btn">' + html + '</span>');
                                     html.on("click", gf.actions.configHandlers[k]);
                                 }
                                 var option = $(`<div class="option" data-id="${k}"><div class="toggle" data-storage-key="action.config.${k}"><div class="handle"></div></div><div class="text"></div></div>`);
+                                var info = gf.translations.get("action.config." + k+".info")
+                                if(info != null){
+                                    option.append($('<div class="info"></div>').html(info));
+                                }
                                 option.find(".text").append(html);
                                 section.append(option);
                             }
@@ -264,9 +268,68 @@ var gf = {
             var e = $(".row.back-link.emblem-back-link");
             if (gf.actions.flagged(e) !== false || !gf.url.matchUrlParts(["emblems"])) return;
             e.append(`
-                    <div class="column gr-adapt"><a href="${gf.api}" target="_blank">Get more emblems from greaterfield.com</a></div>
+                    <div class="column gr-adapt"><a href="https://greaterfield.com" target="_blank">Get more emblems from greaterfield.com</a></div>
                     <div class="column gr-adapt"><span>Import from Gallery</span></div>
                 `);
+        }
+    },
+
+    /**
+     * Translate
+     */
+    translations: {
+        /**
+         * The translation values
+         */
+        _values: {},
+        /**
+         * The current locale
+         */
+        _locale: "en",
+        /**
+         * Load translation from extension folder for current local
+         */
+        load: function (callback) {
+            gf.translations._locale = BF.globals.locale ? BF.globals.locale.split("_")[0] : "en";
+            $.getJSON(gf.sharedFolder + "/translations/en.json", function (data) {
+                gf.translations._values["en"] = data;
+            });
+            if (gf.translations._locale) {
+                $.getJSON(gf.sharedFolder + "/translations/" + gf.translations._locale + ".json", function (data) {
+                    gf.translations._values[gf.translations._locale] = data;
+                });
+            }
+            // just wait a hardcoded time for the files to load, should be enough for both
+            setTimeout(callback, 50);
+        },
+        /**
+         * Get a translation for the current locale, if not found than for en, if than not found return null
+         * @param {string} key
+         * @param {=object} replacements Replace the given placeholders in {brackets}
+         * @returns {string|null}
+         */
+        get: function (key, replacements) {
+            var v = null;
+            if (
+                typeof gf.translations._values[gf.translations._locale] != "undefined" &&
+                typeof gf.translations._values[gf.translations._locale][key] != "undefined"
+            ) {
+                v = gf.translations._values[gf.translations._locale][key];
+            }
+
+            if (
+                v == null &&
+                typeof gf.translations._values["en"] != "undefined" &&
+                typeof gf.translations._values["en"][key] != "undefined"
+            ) {
+                v = gf.translations._values["en"][key];
+            }
+            if (v != null) {
+                gf.tools.each(replacements, function (k, value) {
+                    v = v.replace(new RegExp("{" + k + "}", "ig"), value);
+                });
+            }
+            return v;
         }
     },
 
@@ -453,6 +516,9 @@ window.addEventListener("message", function (event) {
 gf.backend.send("init", null, function (msgData) {
     gf.version = msgData.version;
     gf.sharedFolder = msgData.sharedFolder;
-    gf.storage.loadFromBackend(gf.init);
+    // load translation files
+    gf.translations.load(function () {
+        gf.storage.loadFromBackend(gf.init);
+    });
 });
 

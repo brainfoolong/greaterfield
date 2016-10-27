@@ -1,0 +1,9 @@
+{
+  "action.config.section.general" : "General Improvements",
+  "action.config.emblems" : "Emblem Gallery",
+  "action.config.emblems.info" : "This feature will include a public emblem gallery, the features to share emblems to the public gallery and also some enhancements for the emblem editor.",
+  "action.config.themes" : "Communnity Themes",
+  "action.config.themes.info" : "Get your hands on a new look for this website.",
+  "action.config.plugins" : "Community Plugins",
+  "action.config.plugins.info" : "If you don't find features in greaterfield that you really need, maybe a community made plugin will give it to you."
+}

@@ -66,12 +66,26 @@
 #gf-menu .section > .title{
     font-size: 14px;
     font-weight: bold;
-    padding-bottom: 5px;
+    color: #f17f1a;
+    border-bottom:1px solid rgba(255,255,255, 0.2);
+    padding:10px;
+    padding-left: 50px;
+    margin-bottom: 10px;
 }
 
 #gf-menu .option {
     position: relative;
+    padding:5px;
     padding-left: 50px;
+}
+
+#gf-menu .option .gf-btn{
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+#gf-menu .option .info{
+    color:#a5a5a5;
 }
 
 .gf .toggle {
@@ -102,11 +116,6 @@
 #gf-menu .option .toggle {
     position: absolute;
     left:0;
-}
-
-#gf-menu .option .toggle.active .handle{
-    left:20px;
-    background: #ff1e00;
 }
 
 #gf-modal{
@@ -171,7 +180,8 @@
 }
 
 #gf-modal .themes .entry .author{
-    font-size: 90%;
+    font-size: 80%;
+    color:#a5a5a5;
 }
 
 #gf-modal .themes .entry .description{
@@ -194,4 +204,13 @@
     z-index: -1;
     left: 0;
     top: 0;
+}
+
+.gf-btn{
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    border:1px solid rgba(255,255,255,0.5);
+    padding:6px;
+    color:white;
+    cursor: pointer;
 }
