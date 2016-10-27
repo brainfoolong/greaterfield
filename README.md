@@ -1,6 +1,6 @@
 # Greaterfield
 GreaterField - Make your Web Battlefield great. Improvements for Battlefield Web Companion and the Battlefield Forums!
-The extension is currently in alpha state.
+The extension is currently in development, no release yet.
 
 # What to contribute?
 * Plugins - https://github.com/brainfoolong/greaterfield-plugins
