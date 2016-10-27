@@ -33,6 +33,7 @@ var gf = {
         $(document).on("click", ".gf .toggle[data-storage-key]", function () {
             $(this).toggleClass("active");
             gf.storage.set($(this).attr("data-storage-key"), $(this).hasClass("active"));
+            gf.frontend.toast("success", gf.translations.get("reload"))
         });
     },
 
@@ -96,18 +97,35 @@ var gf = {
          * The config handlers for config
          */
         configHandlers: {
-            "themes": function () {
+            plugins: function () {
+                gf.actions.configHandlers.themesAndPlugins("plugins");
+            },
+            themes: function () {
+                gf.actions.configHandlers.themesAndPlugins("themes");
+            },
+            themesAndPlugins: function (mode) {
+                if (mode == "plugins") {
+                    var u = {
+                        "singular": "plugin",
+                        "url": "https://github.com/brainfoolong/greaterfield/wiki/Plugin-Development"
+                    };
+                } else {
+                    var u = {
+                        "singular": "theme",
+                        "url": "https://github.com/brainfoolong/greaterfield/wiki/Theme-Development"
+                    };
+                }
                 var html = $(`
-                        <div>
-                            Give the website a better look with this community made themes. Are you a css artist? Add your own theme here, visit:<br/>
-                            <a href="https://github.com/brainfoolong/greaterfield/wiki/Theme-Development" target="_blank">https://github.com/brainfoolong/greaterfield/wiki/Theme-Development</a><br/><br/>
-                            <div class="themes">Please wait, we loading the themes...</div>
-                            <div class="themes">
+                        <div class="plugins-themes">
+                            ${gf.translations.get("action.config." + mode + ".handler.1")}<br/>
+                            <a href="${u.url}" target="_blank">${u.url}</a><br/><br/>
+                            <div class="entries">${gf.translations.get("loading")}</div>
+                            <div class="entries">
                                 <div class="entry develop">
                                             <div class="screenshot"></div>
                                             <div class="column">
-                                                <div class="title"><div class="toggle" data-storage-key="theme.development"><div class="handle"></div></div> Development Theme</div>
-                                                <div class="description">Enter an URL to a CSS file in the field bellow. So you can quickly develop a theme in combination with github/dropbox or whatever. Just point to your css url. Don't forget to enable the development theme with the tiny toggle above. After you have entered the link just reload the page. If you want to add a theme to our themes in the list above, head to the above mentioned link :)
+                                                <div class="title"><div class="toggle" data-storage-key="${u.singular}.development"><div class="handle"></div></div> ${gf.translations.get("action.config." + mode + ".deventry")}</div>
+                                                <div class="description">${gf.translations.get("action.config." + mode + ".handler.2")}
                                                 <br/><br/>
                                                 <input type="text">
                                                 </div>
@@ -121,25 +139,25 @@ var gf = {
                     if (!url.match(/^http.*?\.css/i)) {
                         return true;
                     }
-                    gf.storage.set("theme.development.url", url);
-                }).val(gf.storage.get("theme.development.url", ""));
+                    gf.storage.set(u.singular + ".development.url", url);
+                }).val(gf.storage.get(u.singular + ".development.url", ""));
 
-                $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-themes/contents/themes', function (data) {
-                    var t = html.find(".themes").first();
+                $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-' + mode + '/contents/' + mode, function (data) {
+                    var t = html.find(".entries").first();
                     t.html('');
                     gf.tools.each(data, function (k, dir) {
-                        // ignore base theme
+                        // ignore base entry
                         if (dir.name == "base") return true;
                         // get manifest file
-                        $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/" + dir.name + "/manifest.json", function (manifest) {
+                        $.getJSON('https://raw.githubusercontent.com/brainfoolong/greaterfield-' + mode + '/master/' + mode + '/' + dir.name + '/manifest.json', function (manifest) {
                             if (manifest.active === true) {
-                                var cl = dir.name == gf.storage.get("theme.stable.name") ? 'active' : "";
+                                var cl = dir.name == gf.storage.get(u.singular + ".stable.name") ? 'active' : "";
                                 t.append(`
                                         <div class="entry">
-                                            <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/${dir.name}/screenshot.jpg"></div>
+                                            <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-${mode}/master/${mode}/${dir.name}/screenshot.jpg"></div>
                                             <div class="column">
                                                 <div class="title"><div class="toggle ${cl}" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
-                                                <div class="author">Author: ${manifest.author}</div>
+                                                <div class="author">${gf.translations.get("author")}: ${manifest.author}</div>
                                                 <div class="description">${manifest.description}</div>
                                             </div>
                                         </div>
@@ -148,9 +166,21 @@ var gf = {
                         });
                     });
                     t.on("click", ".toggle", function () {
-                        t.find(".toggle").not(this).removeClass("active");
-                        $(this).toggleClass("active");
-                        gf.storage.set("theme.stable.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
+                        if (mode == "plugins") {
+                            // plugins are allowed to enable multiple at once
+                            $(this).toggleClass("active");
+                            var ids = [];
+                            t.find(".toggle.active").each(function () {
+                                ids.push($(this).attr("data-name"));
+                            });
+                            gf.storage.set(u.singular + ".stable.names", ids);
+                        } else {
+                            // themes are allowed to enable only one at a time, beside development entry
+                            t.find(".toggle").not(this).removeClass("active");
+                            $(this).toggleClass("active");
+                            gf.storage.set(u.singular + ".stable.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
+                        }
+                        gf.frontend.toast("success", gf.translations.get("reload"));
                     });
                 });
                 gf.frontend.modal(html);
@@ -216,8 +246,8 @@ var gf = {
                                     html.on("click", gf.actions.configHandlers[k]);
                                 }
                                 var option = $(`<div class="option" data-id="${k}"><div class="toggle" data-storage-key="action.config.${k}"><div class="handle"></div></div><div class="text"></div></div>`);
-                                var info = gf.translations.get("action.config." + k+".info")
-                                if(info != null){
+                                var info = gf.translations.get("action.config." + k + ".info")
+                                if (info != null) {
                                     option.append($('<div class="info"></div>').html(info));
                                 }
                                 option.find(".text").append(html);
@@ -233,7 +263,27 @@ var gf = {
          * Plugins
          */
         plugins: function () {
-
+            var pluginsActivated = [];
+            if (gf.storage.get("plugin.stable.names")) {
+                gf.tools.each(gf.storage.get("plugin.stable.names"), function (k, v) {
+                    pluginsActivated.push({
+                        name: "stable-" + v,
+                        url: "https://rawgit.com/brainfoolong/greaterfield-plugins/master/plugins/" + v + "/script.js"
+                    });
+                });
+            }
+            if (gf.storage.get("plugin.development") && gf.storage.get("plugin.development.url", "")) {
+                pluginsActivated.push({
+                    name: "dev",
+                    url: gf.storage.get("plugin.development.url")
+                });
+            }
+            gf.tools.each(pluginsActivated, function (k, v) {
+                var e = $("#gf-plugin-" + v.name);
+                if (e.length && e.attr("src") == v.url) return true;
+                $("#gf-plugin-" + v.name).remove();
+                $("head").append('<script type="text/javascript" defer="defer" src="' + v.url + '"></script>');
+            });
         },
 
         /**
@@ -446,6 +496,7 @@ var gf = {
          * @param {jQuery|string} html
          */
         modal: function (html) {
+            $("#gf-modal").remove();
             var e = $(`
             <div id="gf-modal" class="gf">
                 <div class="inner">
@@ -458,6 +509,30 @@ var gf = {
                 $(this).closest("#gf-modal").remove();
             });
             e.find(".gf-content").html(html);
+            $("body").append(e);
+        },
+        /**
+         * Show a toast message
+         * @param {string} mode
+         * @param {jQuery|string} html
+         */
+        toast: function (mode, html) {
+            $("#gf-toast").remove();
+            var e = $(`
+            <div id="gf-toast" class="gf ${mode}">
+                <div class="inner">
+                    <div class="close">x</div>
+                    <div class="gf-content"></div>
+                </div>
+            </div>
+            `);
+            e.find(".close").on("click", function () {
+                $(this).closest("#gf-toast").remove();
+            });
+            e.find(".gf-content").html(html);
+            setTimeout(function () {
+                e.addClass("active");
+            }, 30);
             $("body").append(e);
         },
         /**

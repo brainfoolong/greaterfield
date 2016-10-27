@@ -36,19 +36,20 @@
 #gf-menu.active {
     right: 0;
 }
+
 .gf-forums #gf-icon,
-.gf-forums #gf-menu{
+.gf-forums #gf-menu {
     z-index: 9999;
 }
 
 .gf-forums body.header-sticky-new #gf-icon,
-.gf-forums body.header-sticky-new #gf-menu{
-    top:61px;
+.gf-forums body.header-sticky-new #gf-menu {
+    top: 61px;
 }
 
 .gf-forums body:not(.header-sticky-new) #gf-icon,
-.gf-forums body:not(.header-sticky-new) #gf-menu{
-    top:130px;
+.gf-forums body:not(.header-sticky-new) #gf-menu {
+    top: 130px;
 }
 
 #gf-menu h3 {
@@ -63,29 +64,29 @@
     font-family: futura-pt, sans-serif;
 }
 
-#gf-menu .section > .title{
+#gf-menu .section > .title {
     font-size: 14px;
     font-weight: bold;
     color: #f17f1a;
-    border-bottom:1px solid rgba(255,255,255, 0.2);
-    padding:10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px;
     padding-left: 50px;
     margin-bottom: 10px;
 }
 
 #gf-menu .option {
     position: relative;
-    padding:5px;
+    padding: 5px;
     padding-left: 50px;
 }
 
-#gf-menu .option .gf-btn{
+#gf-menu .option .gf-btn {
     padding-top: 1px;
     padding-bottom: 1px;
 }
 
-#gf-menu .option .info{
-    color:#a5a5a5;
+#gf-menu .option .info {
+    color: #a5a5a5;
 }
 
 .gf .toggle {
@@ -93,110 +94,148 @@
     display: inline-block;
     width: 40px;
     height: 19px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     cursor: pointer;
-    padding:1px;
-    border:1px solid rgba(255,255,255,0.3);
+    padding: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.gf .toggle .handle{
+.gf .toggle .handle {
     position: absolute;
-    height:15px;
-    width:20px;
-    background: rgba(255,255,255,0.3);
+    height: 15px;
+    width: 20px;
+    background: rgba(255, 255, 255, 0.3);
     transition: 0.3s;
-    left:0;
+    left: 0;
 }
 
-.gf .toggle.active .handle{
-    left:18px;
+.gf .toggle.active .handle {
+    left: 18px;
     background: #ff1e00;
 }
 
 #gf-menu .option .toggle {
     position: absolute;
-    left:0;
+    left: 0;
 }
 
-#gf-modal{
+#gf-modal {
     position: fixed;
-    left:0;
-    top:0;
-    z-index:9999;
-    background: rgba(0,0,0,0.1);
-    width:100%;
-    height:100%;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
     font-family: Roboto, arial;
-    color:white;
+    color: white;
     font-size: 14px;
     line-height: 1.6;
 }
 
-#gf-modal > .inner{
+#gf-modal > .inner {
     position: absolute;
-    top:10%;
-    left:10%;
-    height:80%;
+    top: 10%;
+    left: 10%;
+    height: 80%;
     text-align: left;
-    width:80%;
+    width: 80%;
     background: #111111;
-    color:white;
+    color: white;
     overflow: auto;
 }
 
-#gf-modal > .inner > .close{
+#gf-modal > .inner > .close {
     position: absolute;
-    top:5px;
+    top: 5px;
     font-size: 24px;
-    right:10px;
+    right: 10px;
     cursor: pointer;
 }
 
-#gf-modal .gf-content{
-    padding:20px;
+#gf-modal .gf-content {
+    padding: 20px;
 }
 
-#gf-modal .themes .entry{
+#gf-modal .plugins-themes .entry {
     padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#gf-modal .themes .entry{
+#gf-modal .plugins-themes .entry {
     display: flex;
 }
 
-#gf-modal .themes .entry .screenshot img{
+#gf-modal .plugins-themes .entry .screenshot img {
     max-width: 150px;
     max-height: 150px;
 }
 
-#gf-modal .themes .entry .column{
+#gf-modal .plugins-themes .entry .column {
     flex-grow: 4;
     padding-left: 20px;
 }
 
-#gf-modal .themes .entry .title{
+#gf-modal .plugins-themes .entry .title {
     font-weight: bold;
     font-size: 120%;
 }
 
-#gf-modal .themes .entry .author{
+#gf-modal .plugins-themes .entry .author {
     font-size: 80%;
-    color:#a5a5a5;
+    color: #a5a5a5;
 }
 
-#gf-modal .themes .entry .description{
+#gf-modal .plugins-themes .entry .description {
     padding-top: 10px;
 }
 
-#gf-modal .themes .entry.develop input{
-    width:95%;
-    padding:5px;
-    color:#222222;
-    border:0;
-    background: rgba(255,255,255,0.4);
+#gf-modal .plugins-themes .entry.develop input {
+    width: 95%;
+    padding: 5px;
+    color: #222222;
+    border: 0;
+    background: rgba(255, 255, 255, 0.4);
 }
 
-.gf-background{
+#gf-toast {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    max-height: 0;
+    z-index: 9999;
+    background: red;
+    width: 100%;
+    font-family: Roboto, arial;
+    color: white;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: hidden;
+    transition: 1s;
+}
+
+#gf-toast.success{
+    background: #12b770;
+}
+
+#gf-toast.active{
+    max-height: 999px;
+}
+
+#gf-toast > .inner > .close {
+    position: absolute;
+    top: 5px;
+    font-size: 24px;
+    right: 10px;
+    cursor: pointer;
+}
+
+#gf-toast .gf-content {
+    padding: 10px;
+}
+
+.gf-background {
     position: fixed;
     background-size: cover;
     height: 100%;
@@ -206,11 +245,11 @@
     top: 0;
 }
 
-.gf-btn{
+.gf-btn {
     display: inline-block;
-    background: rgba(255,255,255,0.3);
-    border:1px solid rgba(255,255,255,0.5);
-    padding:6px;
-    color:white;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 6px;
+    color: white;
     cursor: pointer;
 }
