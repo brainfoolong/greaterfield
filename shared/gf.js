@@ -82,6 +82,19 @@ var gf = {
     },
 
     /**
+     * Some helpfull stuff for plugins
+     */
+    plugins:{
+        /**
+         * Register a plugin
+         * @param {object} pluginObject
+         */
+        register : function (pluginObject) {
+
+        }
+    },
+
+    /**
      * All actions
      */
     actions: {
@@ -318,9 +331,9 @@ var gf = {
             var e = $(".row.back-link.emblem-back-link");
             if (gf.actions.flagged(e) !== false || !gf.url.matchUrlParts(["emblems"])) return;
             e.append(`
-                    <div class="column gr-adapt"><a href="https://greaterfield.com" target="_blank">Get more emblems from greaterfield.com</a></div>
-                    <div class="column gr-adapt"><span>Import from Gallery</span></div>
-                `);
+                <div class="column gr-adapt"><a href="https://greaterfield.com" target="_blank">Get more emblems from greaterfield.com</a></div>
+                <div class="column gr-adapt"><span>Import from Gallery</span></div>
+            `);
         }
     },
 
