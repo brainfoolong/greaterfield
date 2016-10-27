@@ -37,6 +37,12 @@
     right: 0;
 }
 
+.gf-forums #gf-icon,
+.gf-forums #gf-menu{
+    z-index: 9999;
+    top:130px;
+}
+
 #gf-menu h3 {
     font-size: 22px;
     line-height: 1;
@@ -60,25 +66,124 @@
     padding-left: 50px;
 }
 
-#gf-menu .option .toggle {
-    position: absolute;
-    left:0;
+.gf .toggle {
+    position: relative;
+    display: inline-block;
     width: 40px;
-    height: 15px;
-    background: #111111;
+    height: 19px;
+    background: rgba(255,255,255,0.1);
     cursor: pointer;
+    padding:1px;
+    border:1px solid rgba(255,255,255,0.3);
 }
 
-#gf-menu .option .toggle .handle{
+.gf .toggle .handle{
     position: absolute;
     height:15px;
     width:20px;
-    background: #222222;
+    background: rgba(255,255,255,0.3);
     transition: 0.3s;
+    left:0;
+}
+
+.gf .toggle.active .handle{
+    left:18px;
+    background: #ff1e00;
+}
+
+#gf-menu .option .toggle {
+    position: absolute;
     left:0;
 }
 
 #gf-menu .option .toggle.active .handle{
     left:20px;
     background: #ff1e00;
+}
+
+#gf-modal{
+    position: fixed;
+    left:0;
+    top:0;
+    z-index:9999;
+    background: rgba(0,0,0,0.1);
+    width:100%;
+    height:100%;
+    font-family: Roboto, arial;
+    color:white;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+#gf-modal > .inner{
+    position: absolute;
+    top:10%;
+    left:10%;
+    height:80%;
+    text-align: left;
+    width:80%;
+    background: #111111;
+    color:white;
+    overflow: auto;
+}
+
+#gf-modal > .inner > .close{
+    position: absolute;
+    top:5px;
+    font-size: 24px;
+    right:10px;
+    cursor: pointer;
+}
+
+#gf-modal .gf-content{
+    padding:20px;
+}
+
+#gf-modal .themes .entry{
+    padding-bottom: 10px;
+}
+
+#gf-modal .themes .entry{
+    display: flex;
+}
+
+#gf-modal .themes .entry .screenshot img{
+    max-width: 150px;
+    max-height: 150px;
+}
+
+#gf-modal .themes .entry .column{
+    flex-grow: 4;
+    padding-left: 20px;
+}
+
+#gf-modal .themes .entry .title{
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#gf-modal .themes .entry .author{
+    font-size: 90%;
+}
+
+#gf-modal .themes .entry .description{
+    padding-top: 10px;
+}
+
+#gf-modal .themes .entry.develop input{
+    width:95%;
+    padding:5px;
+    color:#222222;
+    border:0;
+    background: rgba(255,255,255,0.4);
+}
+
+.gf-background{
+    position: fixed;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    left: 0;
+    top: 0;
 }

@@ -13,6 +13,13 @@ var gf = {
      * Initialize gf
      */
     init: function () {
+        var cl = "";
+        // add css classes to top
+        if (window.location.href.match(/\/companion\/|\/companion$/i)) cl = "gf-companion";
+        if (window.location.href.match(/\/forums\.battlefield\.com\//i)) cl = "gf-forums";
+        // stop if we don't have found any suitable page
+        if (cl == "") return false;
+        $("html").addClass(cl);
         // domchange observer
         var observer = new MutationObserver(gf.domchange.onMutation);
         observer.observe(document.body, {childList: true, subtree: true});
@@ -21,6 +28,11 @@ var gf = {
             if (ev.keyCode == 27) {
                 $("#gf-menu").removeClass("active");
             }
+        });
+        // bind all toggle clicks
+        $(document).on("click", ".gf .toggle[data-storage-key]", function () {
+            $(this).toggleClass("active");
+            gf.storage.set($(this).attr("data-storage-key"), $(this).hasClass("active"));
         });
     },
 
@@ -57,95 +69,204 @@ var gf = {
             gf.domchange._to = setTimeout(function () {
                 gf.url._currentUrl = window.location.href.replace(/([\?\#](.*))/ig, "");
                 gf.url._currentUrlParts = gf.url._currentUrl.replace(/http.*?\/\/(.*?)\//ig, "").toLowerCase().split("/");
-                gf.domchange.actions._embedGfIcon();
-                gf.tools.each(gf.domchange.actions._config, function (k, v) {
+                gf.actions.embedGfIcon();
+                gf.actions.updateToggles();
+                gf.tools.each(gf.actions._config, function (k, v) {
                     if (gf.storage.get("action.config." + k, v.init)) {
-                        gf.domchange.actions[k]();
+                        gf.actions[k]();
                     }
                 });
             }, 250);
         },
+    },
+
+    /**
+     * All actions
+     */
+    actions: {
+        /**
+         * The config for all available actions
+         */
+        _config: {
+            "emblems": {"init": 1, "section": "general"},
+            "plugins": {"init": 1, "section": "general"},
+            "themes": {"init": 1, "section": "general"}
+        },
+        /**
+         * The config handlers for config
+         */
+        configHandlers: {
+            "themes": function () {
+                var html = $(`
+                        <div>
+                            Give the website a better look with this community made themes. Are you a css artist? Add your own theme here, visit:<br/>
+                            <a href="https://github.com/brainfoolong/greaterfield/wiki/Theme-Development" target="_blank">https://github.com/brainfoolong/greaterfield/wiki/Theme-Development</a><br/><br/>
+                            <div class="themes">Please wait, we loading the themes...</div>
+                            <div class="themes">
+                                <div class="entry develop">
+                                            <div class="screenshot"></div>
+                                            <div class="column">
+                                                <div class="title"><div class="toggle" data-storage-key="theme.development"><div class="handle"></div></div> Development Theme</div>
+                                                <div class="description">Enter an URL to a CSS file in the field bellow. So you can quickly develop a theme in combination with github/dropbox or whatever. Just point to your css url. Don't forget to enable the development theme with the tiny toggle above. After you have entered the link just reload the page. If you want to add a theme to our themes in the list above, head to the above mentioned link :)
+                                                <br/><br/>
+                                                <input type="text">
+                                                </div>
+                                            </div>
+                                        </div>                                                            
+                                </div>
+                        </div>
+                    `);
+                html.find(".develop input").on("input blur", function () {
+                    var url = this.value;
+                    if (!url.match(/^http.*?\.css/i)) {
+                        return true;
+                    }
+                    gf.storage.set("theme.development.url", this.value);
+                }).val(gf.storage.get("theme.development.url", ""));
+
+                $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-themes/contents/themes', function (data) {
+                    var t = html.find(".themes").first();
+                    t.html('');
+                    gf.tools.each(data, function (k, dir) {
+                        // ignore base theme
+                        if (dir.name == "base") return true;
+                        // get manifest file
+                        $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/" + dir.name + "/manifest.json", function (manifest) {
+                            if (manifest.active === true) {
+                                var cl = dir.name == gf.storage.get("theme.stable.name");
+                                t.append(`
+                                        <div class="entry">
+                                            <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/${dir.name}/screenshot.jpg"></div>
+                                            <div class="column">
+                                                <div class="title"><div class="toggle" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
+                                                <div class="author">${manifest.author}</div>
+                                                <div class="description">${manifest.description}</div>
+                                            </div>
+                                        </div>
+                                    `);
+                            }
+                        });
+                    });
+                    t.find(".toggle").on("click", function () {
+                        t.find(".toggle").not(this).removeClass("active");
+                        $(this).toggleClass("active");
+                        gf.storage.set("theme.stable.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
+                    });
+                });
+                gf.frontend.modal(html);
+            }
+        },
+        /**
+         * Check if a given element is flagged (true flag), additionally separated for given name
+         * @param {jQuery} e
+         * @param {=string} name
+         * @returns {boolean|null} null when element is not given
+         */
+        flagged: function (e, name) {
+            if (!e || !e.length) return null;
+            name = name || "";
+            var r = e.data("gf-" + name) || false;
+            e.data("gf-" + name, true);
+            return r;
+        },
 
         /**
-         * All domchange actions
+         * Update all our toggles with their initial state
          */
-        actions: {
-            // the config for all available actions
-            _config: {
-                "emblems": {"init": 1, "section": "general"}
-            },
+        updateToggles: function () {
+            $(".gf .toggle").filter("[data-storage-key]").each(function () {
+                if (!gf.actions.flagged($(this))) {
+                    if (gf.storage.get($(this).attr("data-storage-key"))) {
+                        $(this).addClass("active");
+                    }
+                }
+            });
+        },
 
-            /**
-             * Check if a given element is flagged (true flag), additionally separated for given name
-             * @param {jQuery} e
-             * @param {string} name
-             * @returns {boolean|null} null when element is not given
-             */
-            _flagged: function (e, name) {
-                if (!e || !e.length) return null;
-                name = name || "";
-                var r = e.data("gf-" + name) || false;
-                e.data("gf-" + name, true);
-                return r;
-            },
-
-            /**
-             * Embed GF icon
-             */
-            _embedGfIcon: function () {
-                var icon = $("#gf-icon");
-                if (icon.length || !gf.url.matchUrlParts(["companion"])) return;
-                icon = $('<div id="gf-icon"><img src="' + gf.sharedFolder + '/img/menu_icon.png"></div>');
-                $("body").append(icon).append('<div id="gf-menu"></div>');
-                icon.on("click", function () {
-                    $("#gf-menu, #gf-icon").toggleClass("active");
-                    var menu = $("#gf-menu");
-                    menu.html('');
-                    if (menu.hasClass("active")) {
-                        var sections = {};
-                        gf.tools.each(gf.domchange.actions._config, function (k, v) {
-                            sections[v.section] = v.section;
-                        });
-                        menu.append(`
+        /**
+         * Embed GF icon
+         */
+        embedGfIcon: function () {
+            var icon = $("#gf-icon");
+            if (icon.length) return;
+            icon = $('<div id="gf-icon" class="gf"><img src="' + gf.sharedFolder + '/img/menu_icon.png"></div>');
+            $("body").append(icon).append('<div id="gf-menu" class="gf"></div>');
+            icon.on("click", function () {
+                $("#gf-menu, #gf-icon").toggleClass("active");
+                var menu = $("#gf-menu");
+                menu.html('');
+                if (menu.hasClass("active")) {
+                    var sections = {};
+                    gf.tools.each(gf.actions._config, function (k, v) {
+                        sections[v.section] = v.section;
+                    });
+                    menu.append(`
                             <h3 class="font-futura">GreaterField v${gf.version}!</h3>
                         `);
 
-                        // create for each section block
-                        gf.tools.each(sections, function (k, sectionId) {
-                            var section = $(`<div class="section"><div class="title">${sectionId}</div></div>`);
-                            menu.append(section);
-                            gf.tools.each(gf.domchange.actions._config, function (k, v) {
-                                if (v.section == sectionId) {
-                                    var cl = gf.storage.get("action.config." + k, v.init) ? "active" : "";
-                                    section.append(`
-                                        <div class="option" data-id="${k}"><div class="toggle ${cl}"><div class="handle"></div></div>${k}</div>
-                                    `);
+                    // create for each section block
+                    gf.tools.each(sections, function (k, sectionId) {
+                        var section = $(`<div class="section"><div class="title">${sectionId}</div></div>`);
+                        menu.append(section);
+                        gf.tools.each(gf.actions._config, function (k, v) {
+                            if (v.section == sectionId) {
+                                var html = k;
+                                if (typeof gf.actions.configHandlers[k] == "function") {
+                                    html = $('<button class="btn">' + html + '</button>');
+                                    html.on("click", gf.actions.configHandlers[k]);
                                 }
-                            });
+                                var option = $(`<div class="option" data-id="${k}"><div class="toggle" data-storage-key="action.config.${k}"><div class="handle"></div></div><div class="text"></div></div>`);
+                                option.find(".text").append(html);
+                                section.append(option);
+                            }
                         });
+                    });
+                }
+            });
+        },
 
-                        menu.on("click", ".option .toggle", function () {
-                            var id = $(this).closest(".option").attr("data-id");
-                            console.log(id);
-                            $(this).toggleClass("active");
-                            gf.storage.set("action.config." + id, $(this).hasClass("active"));
-                        });
-                    }
+        /**
+         * Plugins
+         */
+        plugins: function () {
+
+        },
+
+        /**
+         * Themes - Check if any theme or development theme is activated and include it
+         */
+        themes: function () {
+            var themesActivated = [];
+            if (gf.storage.get("theme.stable.name")) {
+                themesActivated.push({
+                    name: "stable",
+                    url: "https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/" + gf.storage.get("theme.stable.name") + "/style.css"
                 });
-            },
+            }
+            if (gf.storage.get("theme.development") && gf.storage.get("theme.development.url")) {
+                themesActivated.push({
+                    name: "dev",
+                    url: gf.storage.get("theme.development.url")
+                });
+            }
+            gf.tools.each(themesActivated, function (k, v) {
+                var e = $("#gf-theme-" + v.name);
+                if (e.length && e.attr("href") == v.url) return true;
+                $("#gf-theme-" + v.name).remove();
+                $("head").append('<link id="gf-theme-' + v.name + '" rel="stylesheet" href="' + v.url + '" media="all" type="text/css">');
+            });
+        },
 
-            /**
-             * Emblem gallery
-             */
-            emblems: function () {
-                var e = $(".row.back-link.emblem-back-link");
-                if (gf.domchange.actions._flagged(e) !== false || !gf.url.matchUrlParts(["emblems"])) return;
-                e.append(`
+        /**
+         * Emblem gallery
+         */
+        emblems: function () {
+            var e = $(".row.back-link.emblem-back-link");
+            if (gf.actions.flagged(e) !== false || !gf.url.matchUrlParts(["emblems"])) return;
+            e.append(`
                     <div class="column gr-adapt"><a href="${gf.api}" target="_blank">Get more emblems from greaterfield.com</a></div>
                     <div class="column gr-adapt"><span>Import from Gallery</span></div>
                 `);
-
-            }
         }
     },
 
@@ -190,7 +311,7 @@ var gf = {
         /**
          * Get a key from storage
          * @param {string} key
-         * @param {*} defaultIfUndefined Return this value instead of undefined if key is not found
+         * @param {=*} defaultIfUndefined Return this value instead of undefined if key is not found
          * @returns {*}
          */
         get: function (key, defaultIfUndefined) {
@@ -254,9 +375,28 @@ var gf = {
     },
 
     /**
-     * Frontend requests to communicate with the webpage
+     * Frontend things
      */
     frontend: {
+        /**
+         * Show a modal window
+         * @param {jQuery|string} html
+         */
+        modal: function (html) {
+            var e = $(`
+            <div id="gf-modal" class="gf">
+                <div class="inner">
+                    <div class="close">x</div>
+                    <div class="gf-content"></div>
+                </div>
+            </div>
+            `);
+            e.find(".close").on("click", function () {
+                $(this).closest("#gf-modal").remove();
+            });
+            e.find(".gf-content").html(html);
+            $("body").append(e);
+        },
         /**
          * Get current persona of the logged in user
          * @param {=number} index
