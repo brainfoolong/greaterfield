@@ -3,8 +3,8 @@ GreaterField - Make your Web Battlefield great. Improvements for Battlefield Web
 The extension is currently in alpha state.
 
 # What to contribute?
-* Plugins - https://github.com/brainfoolong/greaterfield-plugin-base
-* Themes - https://github.com/brainfoolong/greaterfield-theme-base
+* Plugins - https://github.com/brainfoolong/greaterfield-plugins
+* Themes - https://github.com/brainfoolong/greaterfield-themes
 * Core - Comming soon
 * Translations - Comming soon
 

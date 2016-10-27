@@ -121,7 +121,7 @@ var gf = {
                     if (!url.match(/^http.*?\.css/i)) {
                         return true;
                     }
-                    gf.storage.set("theme.development.url", this.value);
+                    gf.storage.set("theme.development.url", url);
                 }).val(gf.storage.get("theme.development.url", ""));
 
                 $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-themes/contents/themes', function (data) {
@@ -133,12 +133,12 @@ var gf = {
                         // get manifest file
                         $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/" + dir.name + "/manifest.json", function (manifest) {
                             if (manifest.active === true) {
-                                var cl = dir.name == gf.storage.get("theme.stable.name");
+                                var cl = dir.name == gf.storage.get("theme.stable.name") ? 'active' : "";
                                 t.append(`
                                         <div class="entry">
                                             <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/${dir.name}/screenshot.jpg"></div>
                                             <div class="column">
-                                                <div class="title"><div class="toggle" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
+                                                <div class="title"><div class="toggle ${cl}" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
                                                 <div class="author">${manifest.author}</div>
                                                 <div class="description">${manifest.description}</div>
                                             </div>
@@ -147,7 +147,7 @@ var gf = {
                             }
                         });
                     });
-                    t.find(".toggle").on("click", function () {
+                    t.on("click", ".toggle", function () {
                         t.find(".toggle").not(this).removeClass("active");
                         $(this).toggleClass("active");
                         gf.storage.set("theme.stable.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
@@ -240,10 +240,10 @@ var gf = {
             if (gf.storage.get("theme.stable.name")) {
                 themesActivated.push({
                     name: "stable",
-                    url: "https://raw.githubusercontent.com/brainfoolong/greaterfield-themes/master/themes/" + gf.storage.get("theme.stable.name") + "/style.css"
+                    url: "https://rawgit.com/brainfoolong/greaterfield-themes/master/themes/" + gf.storage.get("theme.stable.name") + "/style.css"
                 });
             }
-            if (gf.storage.get("theme.development") && gf.storage.get("theme.development.url")) {
+            if (gf.storage.get("theme.development") && gf.storage.get("theme.development.url", "")) {
                 themesActivated.push({
                     name: "dev",
                     url: gf.storage.get("theme.development.url")
@@ -426,11 +426,17 @@ var gf = {
          * Iterate over array or object
          * @param {[]|object} arr
          * @param {function} callback If return false than the iterations is stopped
-         * @returns {boolean}
          */
         each: function (arr, callback) {
-            for (var i in arr) {
-                if (callback(i, arr[i]) === false) return false;
+            if (!arr) return false;
+            if (Object.prototype.toString.call(arr) === '[object Array]') {
+                for (var i = 0; i < arr.length; i++) {
+                    if (callback(i, arr[i]) === false) return false;
+                }
+            } else {
+                for (var i in arr) {
+                    if (callback(i, arr[i]) === false) return false;
+                }
             }
         }
     }

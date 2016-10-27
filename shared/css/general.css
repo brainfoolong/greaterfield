@@ -36,10 +36,18 @@
 #gf-menu.active {
     right: 0;
 }
-
 .gf-forums #gf-icon,
 .gf-forums #gf-menu{
     z-index: 9999;
+}
+
+.gf-forums body.header-sticky-new #gf-icon,
+.gf-forums body.header-sticky-new #gf-menu{
+    top:61px;
+}
+
+.gf-forums body:not(.header-sticky-new) #gf-icon,
+.gf-forums body:not(.header-sticky-new) #gf-menu{
     top:130px;
 }
 
