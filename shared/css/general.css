@@ -1,0 +1,84 @@
+#gf-icon {
+    position: fixed;
+    right: 0;
+    top: 52px;
+    background: #111111;
+    padding: 10px;
+    opacity: 0.7;
+    transition: 0.3s;
+    z-index: 51;
+    cursor: pointer;
+}
+
+#gf-icon:hover {
+    opacity: 1;
+}
+
+#gf-icon.active {
+    right: 350px;
+}
+
+#gf-menu {
+    position: fixed;
+    right: -370px;
+    top: 52px;
+    height: calc(100% - 52px);
+    background: rgba(0, 0, 0, 0.95);
+    padding: 20px;
+    transition: 0.3s;
+    width: 350px;
+    color: white;
+    font-size: 12px;
+    line-height: 1.6;
+    z-index: 51;
+}
+
+#gf-menu.active {
+    right: 0;
+}
+
+#gf-menu h3 {
+    font-size: 22px;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 10px;
+}
+
+#gf-menu .font-futura {
+    font-family: futura-pt, sans-serif;
+}
+
+#gf-menu .section > .title{
+    font-size: 14px;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+#gf-menu .option {
+    position: relative;
+    padding-left: 50px;
+}
+
+#gf-menu .option .toggle {
+    position: absolute;
+    left:0;
+    width: 40px;
+    height: 15px;
+    background: #111111;
+    cursor: pointer;
+}
+
+#gf-menu .option .toggle .handle{
+    position: absolute;
+    height:15px;
+    width:20px;
+    background: #222222;
+    transition: 0.3s;
+    left:0;
+}
+
+#gf-menu .option .toggle.active .handle{
+    left:20px;
+    background: #ff1e00;
+}
