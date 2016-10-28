@@ -2,6 +2,8 @@
 GreaterField - Make your Web Battlefield great. Improvements for Battlefield Web Companion and the Battlefield Forums!
 The extension is currently in development, no release yet.
 
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/screenshots/themes.gif" width="300" />
+
 # What to contribute?
 * Plugins - https://github.com/brainfoolong/greaterfield-plugins
 * Themes - https://github.com/brainfoolong/greaterfield-themes
