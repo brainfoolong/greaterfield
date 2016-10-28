@@ -19,4 +19,5 @@ function inject(document, version, folder) {
     el.setAttribute('type', 'text/javascript');
     el.setAttribute('src', folder + "/gf.js?" + version);
     document.head.appendChild(el);
+
 }

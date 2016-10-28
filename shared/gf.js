@@ -517,7 +517,13 @@ var gf = {
          * Load translation from extension folder for current local
          */
         load: function (callback) {
-            gf.translations.locale = BF.globals.locale ? BF.globals.locale.split("_")[0] : "en";
+            var locale = "en";
+            if(typeof BF != "undefined"){
+                locale = BF.globals.locale.split("_")[0];
+            } else if(window.locale){
+                locale = window.locale.split("-")[0];
+            }
+            gf.translations.locale = locale;
             $.getJSON(gf.sharedFolder + "/translations/en.json", function (data) {
                 gf.translations.addValues("en", data);
             });
