@@ -10,10 +10,10 @@
 var gf = {
 
     /**
-     * The api url to the GF backend
-     * Used for emblems and such stuff
+     * The homepage url
      */
-    api: "https://localhost/gf",
+    homepage: "https://localhost/gf",
+
     /**
      * The current version, injected by init scripts
      */
@@ -53,6 +53,26 @@ var gf = {
             gf.storage.set($(this).attr("data-storage-key"), $(this).hasClass("active"));
             gf.frontend.toast("success", gf.translations.get("reload"))
         });
+    },
+
+    /**
+     * Api tools
+     */
+    api: {
+
+        /**
+         * Send a request to our api
+         * @param {string} action
+         * @param {object|null} data
+         * @param {=function} callback
+         */
+        request: function (action, data, callback) {
+            $.post(gf.homepage + "/api", {"action": action, "data": data}, function (data) {
+                if (typeof callback == "function") {
+                    callback(JSON.parse(data));
+                }
+            });
+        }
     },
 
     /**
@@ -237,12 +257,37 @@ var gf = {
              * Emblem gallery
              */
             emblems: function () {
-                var e = $(".row.back-link.emblem-back-link");
-                if (!gf.tools.isVirgin(e, "emblems") || !gf.url.matchUrlParts(["emblems"])) return;
-                e.append(`
-                    <div class="column gr-adapt"><a href="https://greaterfield.com" target="_blank">Get more emblems from greaterfield.com</a></div>
-                    <div class="column gr-adapt"><span>Import from Gallery</span></div>
-                `);
+                var e = $("#emblemgallery-page");
+                if (!gf.tools.isVirgin(e, "emblems-share") || !gf.url.matchUrlParts(["emblems"])) return;
+                e = $("#emblem-preview").next();
+                var btn = $('<button class="btn-block btn">Public Library</button>');
+                e.prepend(btn);
+                btn.on("click", function () {
+                    var html = $('<div class="emblem-gallery">');
+                    html.on("click", ".entry .import", function () {
+                        var id = $(this).closest(".entry").attr("data-id");
+                        gf.frontend.toast("success", gf.translations.get("loading"));
+                        gf.api.request("emblem.load", {"id": id}, function (data) {
+                            var objects = data.data;
+                            if (typeof objects.objects != "undefined") objects = objects.objects;
+                            gf.frontend.request("Emblems.newPrivateEmblem", {"data": JSON.stringify(objects)}, function () {
+                                gf.frontend.toast("success", gf.translations.get("reload"));
+                            });
+                        });
+                    });
+                    gf.frontend.modal(html);
+                    gf.api.request("emblem.gallery", null, function (data) {
+                        gf.tools.each(data.emblems, function (k, emblem) {
+                            html.append(`
+                                <div class="entry" data-id="${emblem.id}">
+                                    <div class="image"><img src="${emblem.image}"></div>
+                                    <div class="gf-btn import">Import</div>
+                                    <div class="gf-btn report">Report</div>
+                                </div>
+                            `);
+                        });
+                    });
+                });
             }
         }
     },
@@ -610,10 +655,11 @@ var gf = {
     frontend: {
         /**
          * Show a modal window
-         * @param {jQuery|string} html
+         * @param {=jQuery} html If undefined than the existing modal will just get removed
          */
         modal: function (html) {
             $("#gf-modal").remove();
+            if(!html) return;
             var e = $(`
             <div id="gf-modal" class="gf">
                 <div class="inner">
