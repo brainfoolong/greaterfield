@@ -1,12 +1,13 @@
 # Greaterfield
-GreaterField - Make your Web Battlefield great. Improvements for Battlefield Web Companion and the Battlefield Forums!
+Improvements for Battlefield Web Companion and the Battlefield Forums!
 This extension is currently in development, no release yet.
+First stable version ETA: Nov. 2016
 
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/screenshots/themes.gif" width="300" />
 
 # What to contribute?
-* Plugins - https://github.com/brainfoolong/greaterfield-plugins
 * Themes - https://github.com/brainfoolong/greaterfield-themes
+* Plugins - https://github.com/brainfoolong/greaterfield-plugins
 * Translations - Fork this project, go to the `shared/translations` folder and modify the files or add new ones (only the companion available languages). Send a pull request when you're done.
 * Core - Coming soon
 
