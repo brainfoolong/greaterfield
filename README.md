@@ -1,6 +1,7 @@
 # Greaterfield
 Improvements for Battlefield Web Companion and the Battlefield Forums!
-This extension is currently in development, no release yet.
+
+**Note:** This extension is currently in development, no release yet.
 First stable version ETA: Nov. 2016
 
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/screenshots/themes.gif" width="300" />
