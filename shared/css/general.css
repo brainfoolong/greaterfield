@@ -193,9 +193,10 @@
 
 #gf-modal .plugins-themes .entry.develop input {
     width: 95%;
+    margin-top: 20px;
     padding: 5px;
     color: #222222;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.7);
     background: rgba(255, 255, 255, 0.4);
 }
 
