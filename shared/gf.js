@@ -30,7 +30,7 @@ var gf = {
     init: function () {
         var classAdd = "";
         // add css classes to top
-        if (window.location.href.match(/\/companion\/|\/companion$/i)) classAdd = "gf-companion";
+        if (window.location.href.match(/\/companion\/|\/companion(\?|$)/i)) classAdd = "gf-companion";
         if (window.location.href.match(/\/forums\.battlefield\.com\//i)) classAdd = "gf-forums";
         // stop if we don't have found any suitable page
         if (classAdd == "") return false;

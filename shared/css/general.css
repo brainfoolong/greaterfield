@@ -31,6 +31,7 @@
     font-size: 12px;
     line-height: 1.6;
     z-index: 51;
+    overflow-y: auto;
 }
 
 #gf-menu.active {
