@@ -5,8 +5,8 @@ The extension is currently in development, no release yet.
 # What to contribute?
 * Plugins - https://github.com/brainfoolong/greaterfield-plugins
 * Themes - https://github.com/brainfoolong/greaterfield-themes
+* Translations - Fork this project, goto the shared/translations folder and modify the files or add ones (only the companion available languages). Send pull request if you're done.
 * Core - Comming soon
-* Translations - Comming soon
 
 # How to install the stable version of this extension?
 * Google Chrome: Link comming soon...
