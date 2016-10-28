@@ -100,7 +100,15 @@ var gf = {
                 gf.domchange.events.embedMenuIcon();
                 gf.domchange.events.updateToggles();
                 gf.tools.each(gf.config.keys, function (k, v) {
-                    if (typeof gf.domchange.events[k] == "function" && gf.storage.get("config." + k, v.init)) {
+                    var storageKey = "config." + k;
+                    if (v.overrideKey) {
+                        storageKey = v.overrideKey;
+                    }
+                    // set initial value
+                    if (gf.storage.get(storageKey) === null) {
+                        gf.storage.set(storageKey, v.init);
+                    }
+                    if (typeof gf.domchange.events[k] == "function" && gf.storage.get(storageKey)) {
                         gf.domchange.events[k]();
                     }
                 });
@@ -151,13 +159,17 @@ var gf = {
                             menu.append(section);
                             gf.tools.each(gf.config.keys, function (k, v) {
                                 if (v.section == sectionId) {
-                                    var html = gf.translations.get(v.translationKey || "config." + k);
+                                    var storageKey = "config." + k;
+                                    if (v.overrideKey) {
+                                        storageKey = v.overrideKey;
+                                    }
+                                    var html = gf.translations.get(storageKey);
                                     if (typeof gf.config.handlers[k] == "function") {
                                         html = $('<span class="gf-btn">' + html + '</span>');
                                         html.on("click", gf.config.handlers[k]);
                                     }
-                                    var option = $(`<div class="option" data-id="${k}"><div class="toggle" data-storage-key="config.${k}"><div class="handle"></div></div><div class="text"></div></div>`);
-                                    var info = gf.translations.get((v.translationKey || "config." + k) + ".info");
+                                    var option = $(`<div class="option"><div class="toggle" data-storage-key="${storageKey}"><div class="handle"></div></div><div class="text"></div></div>`);
+                                    var info = gf.translations.get(storageKey + ".info");
                                     if (info != null) {
                                         option.append($('<div class="info"></div>').html(info));
                                     }
@@ -273,7 +285,7 @@ var gf = {
 
             // check config flags
             gf.tools.each(plugin.config.keys, function (k, v) {
-                if (v.init != 1 && v.init != 0) err("Config Flag " + k + " does not have a numeric 'init' key");
+                if (v.init !== true && v.init !== false) err("Config Flag " + k + " does not have a boolean init key");
                 if (typeof plugin.translations.en["config." + k] == "undefined") err("Config Flag " + k + " have no corresponding EN translation key");
             });
             if (!valid) return false;
@@ -295,7 +307,7 @@ var gf = {
             gf.tools.each(plugin.config.keys, function (k, v) {
                 // add config key
                 v.section = pluginPrefix;
-                v.translationKey = pluginPrefix + "config." + k;
+                v.overrideKey = pluginPrefix + "config." + k;
                 gf.config.keys[pluginPrefix + k] = v;
                 // add handlers
                 if (typeof plugin.config.handlers != "undefined" && typeof plugin.config.handlers[k] == "function") {
@@ -330,9 +342,9 @@ var gf = {
          * The available config keys for the menu
          */
         keys: {
-            "emblems": {"init": 1, "section": "general"},
-            "plugins": {"init": 1, "section": "general"},
-            "themes": {"init": 1, "section": "general"}
+            "emblems": {"init": true, "section": "general"},
+            "plugins": {"init": true, "section": "general"},
+            "themes": {"init": true, "section": "general"}
         },
         /**
          * The available config option click handlers
