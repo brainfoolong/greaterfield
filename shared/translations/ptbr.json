@@ -6,13 +6,13 @@
     "config.emblems": "Galeria de Emblemas",
     "config.emblems.info": "Este recurso irá incluir uma galeria de emblemas público, os recursos para compartilhar emblemas para a galeria pública e também algumas melhorias para o editor emblema.",
     "config.themes": "Temas Comunitários",
-    "config.themes.info": "Tenha u novo visual neste site!.",
+    "config.themes.info": "Tenha um novo visual neste site!.",
     "config.plugins": "Extensões Comunitárias",
-    "config.plugins.info": "If you don't find features in greaterfield that you really need, maybe a community made plugin will give it to you.",
+    "config.plugins.info": "Se você não encontrar características nativas em greaterfield que você realmente precise, talvez uma extensão comunitária possa dar a você.",
     "config.plugins.deventry" : "URL de Desenvolviemnto",
     "config.plugins.handler.1" : "Adicionar mais recursos com extensões comunitárias.Você é um fã de javascript e deseja contribuir para a comunidade?Visite:",
-    "config.plugins.handler.2" : "Enter an URL to a JS file in the field below, so you can quickly develop a plugin in combination with GitHub/Dropbox or whatever. Just point to your javsscript url. Don't forget to enable the development entry with the tiny toggle above. After you have entered the link just reload the page. If you want to add a plugin to our plugins in the list above, head to the above mentioned link :)",
+    "config.plugins.handler.2" : "insira uma URL para um arquivo JS no campo abaixo, assim você pode rapidamente desenvolver uma extensão em combinação com GitHub / Dropbox ou o que for. Basta apontar para o seu url javsscript. Não se esqueça de ativar a entrada de desenvolvimento com a pequena alavanca acima. Depois de ter introduzido o link apenas recarregue a página. Se você quiser adicionar uma extensão para nossa galeria acima, siga para o link acima mencionado :)",
     "config.themes.deventry" : "URL de Desenvolviemnto",
-    "config.themes.handler.1" : "Give the website a better look with this community made themes. Are you a CSS artist? Add your own theme here, visit:",
-    "config.themes.handler.2" : "Enter an URL to a CSS file in the field below, so you can quickly develop a theme in combination with GitHub/Dropbox or whatever. Just point to your css url. Don't forget to enable the development entry  with the tiny toggle above. After you have entered the link just reload the page. If you want to add a theme to our themes in the list above, head to the above mentioned link :)"
+    "config.themes.handler.1" : "Dê uma nova cara ao site com estes temas criados pela comunidade. Você é um artista de CSS? Adicione o seu próprio tema aqui, visita:",
+    "config.themes.handler.2" : "Insira a URL para o folha de estilo aqui e você poderá fácilmente desenvolver um tema combinado com o GitHub/Dropbox ou o que for. Apenas informe a url do arquivo css.Não se esqueça de ativar a entrada de desenvolvimento com a pequena alavanca acima e depois de ter introduzido o link apenas recarregue a página. Se você quiser adicionar um tema para nosso galeria na lista acima, siga para o link acima mencionado :)"
 }
