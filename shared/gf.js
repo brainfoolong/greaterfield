@@ -12,7 +12,8 @@ var gf = {
     /**
      * The homepage url
      */
-    homepage: "https://localhost/gf",
+    homepage: "https://greaterfield.com",
+    //homepage: "https://localhost/gf",
 
     /**
      * The current version, injected by init scripts
@@ -257,37 +258,120 @@ var gf = {
              * Emblem gallery
              */
             emblems: function () {
-                var e = $("#emblemgallery-page");
-                if (!gf.tools.isVirgin(e, "emblems-share") || !gf.url.matchUrlParts(["emblems"])) return;
-                e = $("#emblem-preview").next();
-                var btn = $('<button class="btn-block btn">Public Library</button>');
-                e.prepend(btn);
-                btn.on("click", function () {
-                    var html = $('<div class="emblem-gallery">');
-                    html.on("click", ".entry .import", function () {
-                        var id = $(this).closest(".entry").attr("data-id");
-                        gf.frontend.toast("success", gf.translations.get("loading"));
-                        gf.api.request("emblem.load", {"id": id}, function (data) {
-                            var objects = data.data;
-                            if (typeof objects.objects != "undefined") objects = objects.objects;
-                            gf.frontend.request("Emblems.newPrivateEmblem", {"data": JSON.stringify(objects)}, function () {
-                                gf.frontend.toast("success", gf.translations.get("reload"));
+                // share to public emblem gallery button
+                (function () {
+                    if ($("#gf-emblem-share").length || !gf.url.matchUrlParts(["emblems"])) return;
+                    var copyBtn = $(".modal-container button.btn.action-copy");
+                    var activeEmblem = $(".emblem-gallery-emblem.selected img").first();
+                    if (copyBtn.length && activeEmblem.length) {
+                        var btn = $(`<button class="btn-block btn" id="gf-emblem-share">Share to Greaterfield Gallery</button>`);
+                        copyBtn.after(btn);
+                        btn.on("click", function () {
+                            btn.remove();
+                            gf.frontend.toast("success", gf.translations.get("loading"));
+                            var persona = gf.frontend.getCurrentPersona();
+                            gf.frontend.request("Emblems.fetchPrivateEmblem", {
+                                "personaId": persona.personaId,
+                                "platform": persona.platform,
+                                "slot": parseInt(window.location.href.match(/([0-9]+)($|\?)/)[1])
+                            }, function (data) {
+                                var img = new Image();
+                                img.crossOrigin = 'Anonymous';
+                                img.onload = function () {
+                                    var canvas = document.createElement('CANVAS');
+                                    var ctx = canvas.getContext('2d');
+                                    var dataURL;
+                                    canvas.height = this.height;
+                                    canvas.width = this.width;
+                                    ctx.drawImage(this, 0, 0);
+                                    var dataURL = canvas.toDataURL("image/png");
+                                    gf.api.request("emblem.save", {
+                                        "image": dataURL,
+                                        "objects": data
+                                    }, function (code) {
+                                        gf.frontend.toast(code == "1" ? "success" : "error", gf.translations.get("emblem.share.callback." + code));
+                                    });
+                                };
+                                var src = activeEmblem.attr("src");
+                                img.src = src;
+                                if (img.complete || typeof img.complete == "undefined") {
+                                    img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+                                    img.src = src;
+                                }
+                            });
+                        });
+                    }
+                })();
+
+                // public emblem gallery button and modal
+                (function () {
+                    var e = $("#gf-emblem-public");
+                    if (e.length || !gf.url.matchUrlParts(["emblems"])) return;
+                    e = $("#emblem-preview").next();
+                    var btn = $(`<button class="btn-block btn" id="gf-emblem-public">${gf.translations.get("emblem.gallery")}</button>`);
+                    e.prepend(btn);
+                    btn.on("click", function () {
+                        var html = $('<div class="emblem-gallery">');
+                        html.on("click", ".entry .report", function () {
+                            var id = $(this).closest(".entry").attr("data-id");
+                            if (!gf.storage.get("emblem.report." + id)) {
+                                var html = $(`
+                                    <div class="emblem-report">
+                                        ${gf.translations.get("emblem.report.text.1")}
+                                        <textarea class="gf-input"></textarea><br/>
+                                        <span class="gf-btn send">Send</span>
+                                    </div>
+                                `);
+                                html.on("click", ".send", function () {
+                                    var text = html.find("textarea").val().trim();
+                                    if (text.length < 10) {
+                                        gf.frontend.toast("error", gf.translations.get("emblem.report.error.1"));
+                                        return;
+                                    }
+                                    gf.api.request("emblem.report", {"id": id, "text" : text}, function () {
+                                        gf.frontend.modal();
+                                        gf.storage.set("emblem.report." + id, true);
+                                        gf.frontend.toast("success", gf.translations.get("emblem.report.done"));
+                                    });
+                                });
+                                gf.frontend.modal(html);
+                            }
+                        });
+                        html.on("click", ".entry .import", function () {
+                            if (gf.cache.get("emblem.import")) {
+                                gf.frontend.toast("error", gf.translations.get("emblem.import.error.1"));
+                            } else {
+                                var id = $(this).closest(".entry").attr("data-id");
+                                gf.frontend.toast("success", gf.translations.get("loading"));
+                                gf.api.request("emblem.load", {"id": id}, function (data) {
+                                    var objects = data.data;
+                                    if (typeof objects.objects != "undefined") objects = objects.objects;
+                                    gf.cache.set("emblem.import", 1);
+                                    gf.frontend.request("Emblems.newPrivateEmblem", {"data": JSON.stringify(objects)}, function () {
+                                        gf.cache.set("emblem.import", 0);
+                                        gf.frontend.toast("success", gf.translations.get("reload"));
+                                    });
+                                });
+                            }
+                        });
+                        gf.frontend.modal(html);
+                        gf.api.request("emblem.gallery", null, function (data) {
+                            gf.tools.each(data.emblems, function (k, emblem) {
+                                var entry = $(`
+                                    <div class="entry" data-id="${emblem.id}">
+                                        <div class="image"><img src="${emblem.image}"></div>
+                                        <div class="gf-btn import">Import</div>
+                                        <div class="gf-btn report">Report</div>
+                                    </div>
+                                `);
+                                html.append(entry);
+                                if (gf.storage.get("emblem.report." + emblem.id)) {
+                                    entry.find(".report").remove();
+                                }
                             });
                         });
                     });
-                    gf.frontend.modal(html);
-                    gf.api.request("emblem.gallery", null, function (data) {
-                        gf.tools.each(data.emblems, function (k, emblem) {
-                            html.append(`
-                                <div class="entry" data-id="${emblem.id}">
-                                    <div class="image"><img src="${emblem.image}"></div>
-                                    <div class="gf-btn import">Import</div>
-                                    <div class="gf-btn report">Report</div>
-                                </div>
-                            `);
-                        });
-                    });
-                });
+                })();
             }
         }
     },
@@ -431,7 +515,7 @@ var gf = {
                                                     ${gf.translations.get("config." + mode + ".deventry")}
                                                 </div>
                                                 <div class="description">${gf.translations.get("config." + mode + ".handler.2")}
-                                                <input type="text">
+                                                <input type="text" class="gf-input">
                                                 </div>
                                             </div>
                                         </div>                                                            
@@ -518,13 +602,13 @@ var gf = {
          */
         load: function (callback) {
             var locale = "en";
-            if(typeof BF != "undefined"){
+            if (typeof BF != "undefined") {
                 locale = BF.globals.locale;
-            } else if(window.locale){
+            } else if (window.locale) {
                 locale = window.locale;
             }
             locale = locale.toLowerCase().replace(/_/ig, "-");
-            if(locale != "pt-br"){
+            if (locale != "pt-br") {
                 locale = locale.split("-")[0];
             }
             gf.translations.locale = locale;
@@ -618,7 +702,44 @@ var gf = {
             gf.backend.send("storage-set", {"gf": gf.storage._data});
         }
     },
-
+    /**
+     * Cache handling
+     */
+    cache: {
+        /**
+         * The cache data
+         */
+        _data: null,
+        /**
+         * Get a key from the cache
+         * @param {string} key
+         * @param {=} defaultIfUndefined Return this value instead of undefined if key is not found
+         * @returns {*}
+         */
+        get: function (key, defaultIfUndefined) {
+            if (typeof defaultIfUndefined == "undefined") {
+                defaultIfUndefined = null;
+            }
+            if (!gf.cache._data) {
+                return null;
+            }
+            if (typeof gf.cache._data[key] == "undefined") {
+                return defaultIfUndefined;
+            }
+            return gf.cache._data[key];
+        },
+        /**
+         * Set a key with value in the cache
+         * @param {string} key
+         * @param {*} value
+         */
+        set: function (key, value) {
+            if (!gf.cache._data) {
+                gf.cache._data = {};
+            }
+            gf.cache._data[key] = value;
+        }
+    },
     /**
      * The port to the background page of the extension
      */
@@ -669,7 +790,7 @@ var gf = {
          */
         modal: function (html) {
             $("#gf-modal").remove();
-            if(!html) return;
+            if (!html) return;
             var e = $(`
             <div id="gf-modal" class="gf">
                 <div class="inner">
