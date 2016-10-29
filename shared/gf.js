@@ -519,9 +519,13 @@ var gf = {
         load: function (callback) {
             var locale = "en";
             if(typeof BF != "undefined"){
-                locale = BF.globals.locale.split("_")[0];
+                locale = BF.globals.locale;
             } else if(window.locale){
-                locale = window.locale.split("-")[0];
+                locale = window.locale;
+            }
+            locale = locale.toLowerCase().replace(/_/ig, "-");
+            if(locale != "pt-br"){
+                locale = locale.split("-")[0];
             }
             gf.translations.locale = locale;
             $.getJSON(gf.sharedFolder + "/translations/en.json", function (data) {

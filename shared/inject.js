@@ -10,10 +10,13 @@ function inject(document, version, folder) {
     el.setAttribute('href', folder + "/css/general.css?" + version);
     document.head.appendChild(el);
 
-    el = document.createElement('script');
-    el.setAttribute('type', 'text/javascript');
-    el.setAttribute('src', folder + "/jquery-3.1.1.min.js?" + version);
-    document.head.appendChild(el);
+    if(!window.location.href.match(/forums\.battlefield\.com/)){
+
+        el = document.createElement('script');
+        el.setAttribute('type', 'text/javascript');
+        el.setAttribute('src', folder + "/jquery-3.1.1.min.js?" + version);
+        document.head.appendChild(el);
+    }
 
     el = document.createElement('script');
     el.setAttribute('type', 'text/javascript');

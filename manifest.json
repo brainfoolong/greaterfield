@@ -15,7 +15,8 @@
     {
       "matches": [
         "https://forums.battlefield.com/*",
-        "https://www.battlefield.com/companion*"
+        "https://www.battlefield.com/companion*",
+        "https://www.battlefield.com/*/companion*"
       ],
       "js": [
         "shared/inject.js",
