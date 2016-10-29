@@ -1,6 +1,6 @@
 {
     "loading" : "Aguarde um momento, o progresso já foi iniciado...",
-    "reload" : "O recarregamento da página pode ser necessário - pressione F5 para recarregar a página",
+    "reload" : "O recarregamento da página pode ser necessário - Pressione F5 para recarregar a página",
     "author" : "Autor",
     "config.section.general": "Melhorias Gerais",
     "config.emblems": "Galeria de Emblemas",
@@ -13,6 +13,6 @@
     "config.plugins.handler.1" : "Adicione novas características com os plugins feitos pela comunidade. Se você é um viciado em javascript e quer contribuir com a comunidade, visite:",
     "config.plugins.handler.2" : "Insira a URL para um arquivo JS no campo abaixo, para você poder rapidamente testar um plugin. Não esqueça de habilitar a opção de Desenvolvimento acima. Após ter inserido o link, recarregue a página. Se você quiser adicionar seu plugin na lista acima, vá no link mencionado acima :)",
     "config.themes.deventry" : "URL de Desenvolvimento",
-    "config.themes.handler.1" : "Dê a este site um melhor estilo, com os temas criados pela comunidade. Você é um artista do CSS? Adicione seu próprio tema aqui, entre:",
+    "config.themes.handler.1" : "Dê uma cara nova à este site, com os temas criados pela comunidade. Você é um artista do CSS? Adicione seu próprio tema aqui, visite:",
     "config.themes.handler.2" : "Insira a URL para um arquivo CSS no campo abaixo, para você poder rapidamente testar um tema. Não esqueça de habilitar a opção de Desenvolvimento acima. Após ter inserido o link, recarregue a página. Se você quiser adicionar seu tema na lista acima, vá no link mencionado acima :)"
 }
