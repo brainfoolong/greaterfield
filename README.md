@@ -26,5 +26,5 @@ First stable version ETA: Nov. 2016
     * Open the Add-ons window
     * Click the settings icon at the top right (beside the 'Search all add-ons' field) and click on 'Debug Add-ons'
     * Enable add-on debugging
-    * Click 'Load Temporary Add-on' and point to the cloned repository folder 
+    * Click 'Load Temporary Add-on' and point to the cloned repository folder -> `manifest.json`
 
