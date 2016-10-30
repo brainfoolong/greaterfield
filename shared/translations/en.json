@@ -30,6 +30,7 @@
     "emblem.report.error.1": "Please give us a more detailed information",
     "emblem.report.error.2": "No correct emblem code",
     "emblem.report.done": "Thank you for your report. We'll check it soon",
-    "emblem.code.import.text.1" : "Here you can import any emblems from Battlefield 4 with their emblem code. Just goto your BF4 emblem page and hit the button 'Import into Companion', than go back here and you should see a code in the area bellow. You can only import an emblem when you have all shapes unlocked that are required by the emblem. Otherwise it will fail silently and do not import the emblem.",
+    "emblem.code.import.text.1" : "Here you can import any emblems from Battlefield 4 with their emblem code. Just goto your BF4 emblem page and hit the button 'Import into Companion', than go back here and you should see a code in the area bellow.",
+    "emblem.import.notice" : "You can only import an emblem when you have all shapes unlocked that are required by the emblem. Otherwise it will fail silently and do not import the emblem.",
     "emblem.gallery": "Greaterfield Gallery"
 }

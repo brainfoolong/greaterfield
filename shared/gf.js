@@ -12,8 +12,8 @@ var gf = {
     /**
      * The homepage url
      */
-    homepage: "https://greaterfield.com",
-    //homepage: "https://localhost/gf",
+    //homepage: "https://greaterfield.com",
+    homepage: "https://localhost/gf",
 
     /**
      * The current version, injected by init scripts
@@ -327,7 +327,72 @@ var gf = {
                     var btn = $(`<button class="btn-block btn" id="gf-emblem-public">${gf.translations.get("emblem.gallery")}</button>`);
                     e.prepend(btn);
                     btn.on("click", function () {
-                        var html = $('<div class="emblem-gallery">');
+                        var html = $(`
+                            <div class="emblem-gallery">
+                                <div>${gf.translations.get("emblem.import.notice")}</div><br/>
+                                <div class="filters">
+                                    <span class="gf-btn" data-id="newest">Newest</span> 
+                                    <span class="gf-btn" data-id="top">Top</span> 
+                                    <span class="gf-btn" data-id="random">Random</span>
+                                </div>
+                                <div class="entries"></div>
+                                <div class="more"><span class="gf-btn">Show more emblems</span></div>
+                            </div>
+                        `);
+                        var entries = [];
+                        var showEntries = function (filter) {
+                            entries.sort(function (a, b) {
+                                var aV = 0;
+                                var bV = 0;
+                                if (filter == "newest") {
+                                    aV = a.id;
+                                    bV = b.id;
+                                }
+                                if (filter == "top") {
+                                    aV = a.installs;
+                                    bV = b.installs;
+                                }
+                                if (filter == "random") {
+                                    aV = Math.random();
+                                    bV = Math.random();
+                                }
+                                if (aV > bV) return -1;
+                                if (aV < bV) return 1;
+                                return 0;
+                            });
+                            html.find(".entries").html('');
+                            gf.tools.each(entries, function (k, emblem) {
+                                var entry = $(`
+                                    <div class="entry gf-hidden" data-id="${emblem.id}">
+                                        <div class="image"><img data-src="${emblem.image}"></div>
+                                        <div class="gf-btn import">${gf.translations.get("import")}</div>
+                                        <div class="gf-btn report">${gf.translations.get("report")}</div>
+                                    </div>
+                                `);
+                                html.find(".entries").append(entry);
+                                if (gf.storage.get("emblem.report." + emblem.id)) {
+                                    entry.find(".report").remove();
+                                }
+                            });
+                            html.find(".more .gf-btn").trigger("click");
+                        };
+                        html.on("click", ".filters .gf-btn", function () {
+                            showEntries($(this).attr("data-id"));
+                        });
+                        html.on("click", ".more .gf-btn", function () {
+                            var i = 0;
+                            var max = 50;
+                            html.find(".entries .entry.gf-hidden").each(function () {
+                                i++;
+                                $(this).removeClass("gf-hidden");
+                                var img = $(this).find("img");
+                                img.attr("src", img.attr("data-src"));
+                                if (i > max) return false;
+                            });
+                            if (!html.find(".entries .entry.gf-hidden").length) {
+                                $(this).remove();
+                            }
+                        });
                         html.on("click", ".entry .report", function () {
                             var id = $(this).closest(".entry").attr("data-id");
                             if (!gf.storage.get("emblem.report." + id)) {
@@ -359,12 +424,17 @@ var gf = {
                             } else {
                                 var id = $(this).closest(".entry").attr("data-id");
                                 gf.frontend.toast("success", gf.translations.get("loading"));
-                                gf.api.request("emblem.load", {"id": id}, function (data) {
+                                gf.api.request("emblem.load", {
+                                    "id": id,
+                                    "done": gf.storage.get("emblem.loaded." + id)
+                                }, function (data) {
                                     var objects = data.data;
                                     if (typeof objects.objects != "undefined") objects = objects.objects;
                                     gf.cache.set("emblem.import", 1);
+                                    gf.storage.set("emblem.loaded." + id, 1);
                                     gf.frontend.request("Emblems.newPrivateEmblem", {"data": JSON.stringify(objects)}, function () {
                                         gf.cache.set("emblem.import", 0);
+                                        gf.frontend.modal();
                                         gf.frontend.toast("success", gf.translations.get("reload"));
                                     });
                                 });
@@ -372,19 +442,8 @@ var gf = {
                         });
                         gf.frontend.modal(html);
                         gf.api.request("emblem.gallery", null, function (data) {
-                            gf.tools.each(data.emblems, function (k, emblem) {
-                                var entry = $(`
-                                    <div class="entry" data-id="${emblem.id}">
-                                        <div class="image"><img src="${emblem.image}"></div>
-                                        <div class="gf-btn import">${gf.translations.get("import")}</div>
-                                        <div class="gf-btn report">${gf.translations.get("report")}</div>
-                                    </div>
-                                `);
-                                html.append(entry);
-                                if (gf.storage.get("emblem.report." + emblem.id)) {
-                                    entry.find(".report").remove();
-                                }
-                            });
+                            entries = data.emblems;
+                            showEntries("newest");
                         });
                     });
                     var importBtn = $(`<button class="btn-block btn" id="gf-emblem-code-import">${gf.translations.get("emblem.code.import")}</button>`);
@@ -393,6 +452,7 @@ var gf = {
                         var html = $(`
                             <div class="emblem-code-import">
                                 <div>${gf.translations.get("emblem.code.import.text.1")}</div>
+                                <div>${gf.translations.get("emblem.import.notice")}</div>
                                 <div><textarea class="gf-input"></textarea></div>
                                 <span class="gf-btn import">${gf.translations.get("import")}</span>
                             </div>
@@ -405,14 +465,14 @@ var gf = {
                                 gf.frontend.toast("success", gf.translations.get("loading"));
                                 var t = html.find("textarea").val();
                                 var m = t.match(/(\[.*?\])/);
-                                if(m) {
+                                if (m) {
                                     gf.cache.set("emblem.import", 1);
                                     gf.frontend.request("Emblems.newPrivateEmblem", {"data": m[1]}, function () {
                                         gf.cache.set("emblem.import", 0);
                                         gf.frontend.modal();
                                         gf.frontend.toast("success", gf.translations.get("reload"));
                                     });
-                                }else{
+                                } else {
                                     gf.frontend.toast("error", gf.translations.get("emblem.import.error.2"));
                                 }
                             }

@@ -7,6 +7,10 @@
     color:white;
 }
 
+.gf-hidden{
+    display: none !important;
+}
+
 #gf-icon {
     position: fixed;
     right: 0;
@@ -205,10 +209,19 @@
     margin-top: 20px;
 }
 
+#gf-modal .emblem-gallery .filters{
+    margin-bottom: 20px;
+}
+
+#gf-modal .emblem-gallery .more{
+    margin-top: 20px;
+}
+
+
 #gf-modal .emblem-gallery .entry{
     display: inline-block;
-    width:calc(10% - 10px);
-    padding:5px;
+    width:calc(10%);
+    padding:15px;
     text-align: center;
 }
 
@@ -279,4 +292,13 @@
     padding: 6px;
     color: white;
     cursor: pointer;
+    transition: 0.3s;
+}
+
+.gf-btn:hover{
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gf-btn:active{
+    background: rgba(255, 255, 255, 0.4);
 }
