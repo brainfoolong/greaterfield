@@ -1,15 +1,15 @@
 {
-    "loading": "Bitte warte einen Moment, der Prozess wurde schon gestartet...",
-    "reload": "Ein Reload der Seite ist vielleicht notwendig - Drücke F5 um die Seite zu aktualisieren",
-    "author": "Author",
-    "config.section.general": "Allgemeine Verbesserungen",
+    "author": "Autor",
     "config.emblems.info": "Das Feature inkludiert eine öffentliche Emblem Gallery, Features zum teilen von öffentlichen Emblemen und kleineren Verbesserungen für den Editor.",
-    "config.themes.info": "Verändere den Look ein wenig",
-    "config.plugins.info": " Falls du irgendwelche Features vermisst kannst du selbst ein Plugin erstellen oder eines von der Commnunity nutzen.",
     "config.plugins.deventry": "Entwicklungslink",
     "config.plugins.handler.1": "Fügt mehr Features mit Community-made plugins hinzu. Bist du ein Javascript Junky, dann kannst du etwas beitragen: besuche:",
-    "config.plugins.handler.2": "Gibt eine URL zu einem Javascript File ein. Damit kannst du schnell ein Plugin entwickeln in Kombination mit Dropbox/Github oder was auch immer. Nicht vergessen, aktiviere den Eintrag mit dem kleinen Button oberhalb. Du musst die Seite eventuell neu laden. Falls du ein Plugin in die obere Liste hinzufügen willst, besuche den oben angeführten Link :)",
+    "config.plugins.handler.2": "Gibt eine URL zu einem Javascript File ein. Damit kannst du schnell ein Plugin entwickeln in Kombination mit Dropbox\/Github oder was auch immer. Nicht vergessen, aktiviere den Eintrag mit dem kleinen Button oberhalb. Du musst die Seite eventuell neu laden. Falls du ein Plugin in die obere Liste hinzufügen willst, besuche den oben angeführten Link :)",
+    "config.plugins.info": "Falls du irgendwelche Features vermisst kannst du selbst ein Plugin erstellen oder eines von der Commnunity nutzen.",
+    "config.section.general": "Allgemeine Verbesserungen",
     "config.themes.deventry": "Development URL",
     "config.themes.handler.1": "Give the website a better look with this community made themes. Are you a css artist? Add your own theme here, visit:",
-    "config.themes.handler.2": "Gibt eine URL zu einem CSS File ein. Damit kannst du schnell ein Theme entwickeln in Kombination mit Dropbox/Github oder was auch immer. Nicht vergessen, aktiviere den Eintrag mit dem kleinen Button oberhalb. Du musst die Seite eventuell neu laden. Falls du ein Theme in die obere Liste hinzufügen willst, besuche den oben angeführten Link :)"
+    "config.themes.handler.2": "Gibt eine URL zu einem CSS File ein. Damit kannst du schnell ein Theme entwickeln in Kombination mit Dropbox\/Github oder was auch immer. Nicht vergessen, aktiviere den Eintrag mit dem kleinen Button oberhalb. Du musst die Seite eventuell neu laden. Falls du ein Theme in die obere Liste hinzufügen willst, besuche den oben angeführten Link :)",
+    "config.themes.info": "Verändere den Look ein wenig",
+    "loading": "Bitte warte einen Moment, der Prozess wurde schon gestartet...",
+    "reload": "Ein Reload der Seite ist vielleicht notwendig - Drücke F5 um die Seite zu aktualisieren"
 }
