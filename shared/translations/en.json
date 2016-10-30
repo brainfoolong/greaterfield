@@ -1,6 +1,9 @@
 {
     "loading": "Please wait a moment, progress has started already...",
     "reload": "A page reload may be required - press F5 to reload the page",
+    "send": "Send",
+    "import": "Import",
+    "report": "Report",
     "author": "Author",
     "config.section.general": "General Improvements",
     "config.emblems": "Emblem Gallery",
@@ -20,8 +23,13 @@
     "emblem.share.callback.3": "Could not save emblem, no valid image url found",
     "emblem.share.callback.4": "Emblem already exist in gallery",
     "emblem.import.error.1": "Previous import is in progress, wait until it's done!",
+    "emblem.import.battlelog" : "Import into Companion",
+    "emblem.import.battlelog.copied" : "Code copied to clipboard - Goto companion emblems and click import from code",
+    "emblem.code.import" : "Import from Code",
     "emblem.report.text.1": "You should report an emblem if it violate any rule for emblems. If you think that emblem should be removed, let us know why.",
     "emblem.report.error.1": "Please give us a more detailed information",
+    "emblem.report.error.2": "No correct emblem code",
     "emblem.report.done": "Thank you for your report. We'll check it soon",
+    "emblem.code.import.text.1" : "Here you can import any emblems from Battlefield 4 with their emblem code. Just goto your BF4 emblem page and hit the button 'Import into Companion', than go back here and you should see a code in the area bellow. You can only import an emblem when you have all shapes unlocked that are required by the emblem. Otherwise it will fail silently and do not import the emblem.",
     "emblem.gallery": "Greaterfield Gallery"
 }

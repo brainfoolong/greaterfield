@@ -216,9 +216,14 @@
     width:100%;
 }
 
-#gf-modal .emblem-report textarea{
+#gf-modal .emblem-report textarea,
+#gf-modal .emblem-code-import textarea{
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+#gf-modal .emblem-code-import textarea{
+    height:200px;
 }
 
 #gf-toast {

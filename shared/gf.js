@@ -33,6 +33,7 @@ var gf = {
         // add css classes to top
         if (window.location.href.match(/\/companion\/|\/companion(\?|$)/i)) classAdd = "gf-companion";
         if (window.location.href.match(/\/forums\.battlefield\.com\//i)) classAdd = "gf-forums";
+        if (window.location.href.match(/\/battlelog\.battlefield\.com\//i)) classAdd = "gf-battlelog";
         // stop if we don't have found any suitable page
         if (classAdd == "") return false;
         $("html").addClass(classAdd);
@@ -255,9 +256,24 @@ var gf = {
             },
 
             /**
-             * Emblem gallery
+             * Emblem gallery and improvements
              */
             emblems: function () {
+                // bf4 emblem import
+                (function () {
+                    var e = $("#emblem-action-save");
+                    if (!gf.tools.isVirgin(e) || $("#gf-emblem-import").length) return;
+                    var btn = $(`<button id="gf-emblem-import" class="btn btn-primary pull-right margin-left">
+                         <span>${gf.translations.get("emblem.import.battlelog")}</span>
+                         </button>
+                    `);
+                    e.after(btn);
+                    btn.on("click", function () {
+                        gf.storage.set("emblem.import.code", JSON.stringify(emblem.emblem.data.objects));
+                        base.showReceipt(gf.translations.get("emblem.import.battlelog.copied"));
+                    });
+                })();
+
                 // share to public emblem gallery button
                 (function () {
                     if ($("#gf-emblem-share").length || !gf.url.matchUrlParts(["emblems"])) return;
@@ -303,7 +319,7 @@ var gf = {
                     }
                 })();
 
-                // public emblem gallery button and modal
+                // public emblem gallery button, modal and import
                 (function () {
                     var e = $("#gf-emblem-public");
                     if (e.length || !gf.url.matchUrlParts(["emblems"])) return;
@@ -319,7 +335,7 @@ var gf = {
                                     <div class="emblem-report">
                                         ${gf.translations.get("emblem.report.text.1")}
                                         <textarea class="gf-input"></textarea><br/>
-                                        <span class="gf-btn send">Send</span>
+                                        <span class="gf-btn send">${gf.translations.get("send")}</span>
                                     </div>
                                 `);
                                 html.on("click", ".send", function () {
@@ -328,7 +344,7 @@ var gf = {
                                         gf.frontend.toast("error", gf.translations.get("emblem.report.error.1"));
                                         return;
                                     }
-                                    gf.api.request("emblem.report", {"id": id, "text" : text}, function () {
+                                    gf.api.request("emblem.report", {"id": id, "text": text}, function () {
                                         gf.frontend.modal();
                                         gf.storage.set("emblem.report." + id, true);
                                         gf.frontend.toast("success", gf.translations.get("emblem.report.done"));
@@ -360,8 +376,8 @@ var gf = {
                                 var entry = $(`
                                     <div class="entry" data-id="${emblem.id}">
                                         <div class="image"><img src="${emblem.image}"></div>
-                                        <div class="gf-btn import">Import</div>
-                                        <div class="gf-btn report">Report</div>
+                                        <div class="gf-btn import">${gf.translations.get("import")}</div>
+                                        <div class="gf-btn report">${gf.translations.get("report")}</div>
                                     </div>
                                 `);
                                 html.append(entry);
@@ -370,6 +386,38 @@ var gf = {
                                 }
                             });
                         });
+                    });
+                    var importBtn = $(`<button class="btn-block btn" id="gf-emblem-code-import">${gf.translations.get("emblem.code.import")}</button>`);
+                    e.prepend(importBtn);
+                    importBtn.on("click", function () {
+                        var html = $(`
+                            <div class="emblem-code-import">
+                                <div>${gf.translations.get("emblem.code.import.text.1")}</div>
+                                <div><textarea class="gf-input"></textarea></div>
+                                <span class="gf-btn import">${gf.translations.get("import")}</span>
+                            </div>
+                        `);
+                        html.find("textarea").val(gf.storage.get("emblem.import.code"));
+                        html.on("click", ".import", function () {
+                            if (gf.cache.get("emblem.import")) {
+                                gf.frontend.toast("error", gf.translations.get("emblem.import.error.1"));
+                            } else {
+                                gf.frontend.toast("success", gf.translations.get("loading"));
+                                var t = html.find("textarea").val();
+                                var m = t.match(/(\[.*?\])/);
+                                if(m) {
+                                    gf.cache.set("emblem.import", 1);
+                                    gf.frontend.request("Emblems.newPrivateEmblem", {"data": m[1]}, function () {
+                                        gf.cache.set("emblem.import", 0);
+                                        gf.frontend.modal();
+                                        gf.frontend.toast("success", gf.translations.get("reload"));
+                                    });
+                                }else{
+                                    gf.frontend.toast("error", gf.translations.get("emblem.import.error.2"));
+                                }
+                            }
+                        });
+                        gf.frontend.modal(html);
                     });
                 })();
             }
@@ -847,6 +895,27 @@ var gf = {
          */
         request: function (action, data, callback) {
             SC.client.jsonRpc(action, data, callback);
+        },
+        /**
+         * Send a request to battlelog
+         * @param {string} url
+         * @param {=function} callback
+         */
+        battlelogRequest: function (url, callback, error) {
+            $.ajax({
+                "url": url,
+                complete: function (data, status) {
+                    if (status == "success") {
+                        callback(typeof data == "string" ? JSON.parse(data) : data, status);
+                    } else {
+                        callback(data, status);
+                    }
+                },
+                beforeSend: function (xhr) {
+                    xhr.overrideMimeType('application/json');
+                    xhr.setRequestHeader('X-AjaxNavigation', 1);
+                }
+            });
         }
     },
 

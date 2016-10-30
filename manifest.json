@@ -1,52 +1,53 @@
 {
-  "name": "Greaterfield",
-  "short_name": "greaterfield",
-  "version": "9.9.9",
-  "manifest_version": 2,
-  "description": "Improvements for Battlefield Web Companion and the Battlefield Forums!",
-  "homepage_url": "https://greaterfield.com",
-  "minimum_chrome_version": "40.0",
-  "icons": {
-    "16": "shared/img/icon16.png",
-    "48": "shared/img/icon48.png",
-    "128": "shared/img/icon128.png"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "https://forums.battlefield.com/*",
-        "https://www.battlefield.com/companion*",
-        "https://www.battlefield.com/*/companion*"
-      ],
-      "js": [
-        "shared/inject.js",
-        "init.js"
-      ],
-      "run_at": "document_start"
+    "name": "Greaterfield",
+    "short_name": "greaterfield",
+    "version": "9.9.9",
+    "manifest_version": 2,
+    "description": "Improvements for Battlefield Web Companion and the Battlefield Forums!",
+    "homepage_url": "https://greaterfield.com",
+    "minimum_chrome_version": "40.0",
+    "icons": {
+        "16": "shared/img/icon16.png",
+        "48": "shared/img/icon48.png",
+        "128": "shared/img/icon128.png"
     },
-    {
-      "matches": [
-        "https://greaterfield.com/*"
-      ],
-      "js": [
-        "shared/webpage.js"
-      ],
-      "run_at": "document_start"
-    }
-  ],
-  "background": {
-    "scripts": [
-      "shared/jquery-3.1.1.min.js",
-      "background.js"
+    "content_scripts": [
+        {
+            "matches": [
+                "https://forums.battlefield.com/*",
+                "https://www.battlefield.com/*",
+                "http://battlelog.battlefield.com/*",
+                "https://battlelog.battlefield.com/*"
+            ],
+            "js": [
+                "shared/inject.js",
+                "init.js"
+            ],
+            "run_at": "document_start"
+        },
+        {
+            "matches": [
+                "https://greaterfield.com/*"
+            ],
+            "js": [
+                "shared/webpage.js"
+            ],
+            "run_at": "document_start"
+        }
     ],
-    "persistent": false
-  },
-  "permissions": [
-    "http://*.battlefield.com/*",
-    "https://*.battlefield.com/*",
-    "https://greaterfield.com/*"
-  ],
-  "web_accessible_resources": [
-    "shared/*"
-  ]
+    "background": {
+        "scripts": [
+            "shared/jquery-3.1.1.min.js",
+            "background.js"
+        ],
+        "persistent": false
+    },
+    "permissions": [
+        "http://*.battlefield.com/*",
+        "https://*.battlefield.com/*",
+        "https://greaterfield.com/*"
+    ],
+    "web_accessible_resources": [
+        "shared/*"
+    ]
 }
