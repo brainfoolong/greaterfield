@@ -45,7 +45,8 @@
     "permissions": [
         "http://*.battlefield.com/*",
         "https://*.battlefield.com/*",
-        "https://greaterfield.com/*"
+        "https://greaterfield.com/*",
+        "https://github.com/*"
     ],
     "web_accessible_resources": [
         "shared/*"

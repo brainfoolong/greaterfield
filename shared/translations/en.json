@@ -36,5 +36,8 @@
     "reload": "A page reload may be required - press F5 to reload the page",
     "report": "Report",
     "send": "Send",
-    "translations.text.1": "Help us to translate greaterfield into other languages. With this editor you easily can translate missing values into your current language."
+    "translations.text.1": "Help us to translate greaterfield into other languages. With this editor you easily can translate missing values into your current language.",
+    "translations.text.2": "Empty fields mean the EN translation will be used. Leave it empty when you don't have a translation for it, or when english is the best way for the key.",
+    "translations.text.3": "Current language you now translate into: {lang}",
+    "translations.lang.error": "EN is not editable - It's the root source for translations"
 }

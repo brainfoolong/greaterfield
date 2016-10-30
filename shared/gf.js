@@ -581,12 +581,76 @@ var gf = {
         keys: {
             "emblems": {"init": true, "section": "general"},
             "plugins": {"init": true, "section": "general"},
-            "themes": {"init": true, "section": "general"}
+            "themes": {"init": true, "section": "general"},
+            "translations": {"init": false, "section": "gf"}
         },
         /**
          * The available config option click handlers
          */
         handlers: {
+            translations: function () {
+                var html = $(`
+                    <div class="translations">
+                        <div>${gf.translations.get("translations.text.1")}</div>
+                        <div>${gf.translations.get("translations.text.2")}</div>
+                        <h3>${gf.translations.get("translations.text.3", {"lang": gf.translations.locale.toUpperCase()})}</h3>
+                        <div class="values"></div><br/><br/>
+                        <div><span class="gf-btn pull gf-hidden">Send changes to GitHub</span> <span class="gf-btn next gf-hidden">Next step -> Open external window to authorize on github</span></div>
+                    </div>
+                `);
+                var user = gf.frontend.getCurrentPersona().displayName;
+                // get original english translations
+                $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield/master/shared/translations/en.json?" + Math.random(), function (enValues) {
+                    if(gf.translations.locale == "en"){
+                        gf.frontend.toast("error", gf.translations.get("translations.lang.error"))
+                        return;
+                    }
+                    var onLoadLocale = function (localeValues) {
+                        var keys = [];
+                        gf.tools.each(enValues, function (key) {
+                            keys.push(key);
+                        });
+                        keys.sort();
+                        gf.tools.each(keys, function (index, key) {
+                            var entry = $(`
+                                <div class="entry" data-key="${key}">
+                                    <div class="original"></div>        
+                                    <div class="locale"><textarea class="gf-input"></textarea></div>   
+                                </div>
+                            `);
+                            var v = localeValues[key] || "";
+                            entry.find(".original").html(enValues[key].replace(/</ig, "&lt;").replace(/>/ig, "&gt;"));
+                            entry.find("textarea").val(v);
+                            html.find(".values").append(entry);
+                        });
+                        html.find(".pull").removeClass("gf-hidden").on("click", function () {
+                            var values = {};
+                            var i = 0;
+                            html.find(".entry").each(function () {
+                                var v = $(this).find("textarea").val().trim();
+                                if (v == "") return true;
+                                i++;
+                                values[$(this).attr("data-key")] = v;
+                            });
+                            if (i > 0) {
+                                gf.api.request("translation.pull", {
+                                    "values": values,
+                                    "user": user,
+                                    "locale": gf.translations.locale
+                                }, function (data) {
+                                    html.find(".next").removeClass("gf-hidden").on("click", function () {
+                                        window.open(data.url, "translations");
+                                    });
+                                });
+                            }
+                        });
+                    };
+                    $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield/master/shared/translations/" + gf.translations.locale + ".json?" + Math.random(), onLoadLocale).fail(function (data) {
+                        onLoadLocale({});
+                    });
+                });
+                gf.frontend.modal(html);
+            },
             plugins: function () {
                 gf.config.handlers.themesAndPlugins("plugins");
             },
@@ -943,8 +1007,17 @@ var gf = {
          * @returns {object|null}
          */
         getCurrentPersona: function (index) {
-            index = index || 0;
-            if (SC && SC.personas && SC.personas[index]) return SC.personas[index];
+            if (window.location.href.match(/forums\.battlefield\.com/)) {
+                if ($(".WhoIs .Username").length) {
+                    return {
+                        "displayName": $(".WhoIs .Username").text().trim(),
+                        "personaId": $(".WhoIs .Username").text().trim()
+                    };
+                }
+            } else {
+                index = index || 0;
+                if (SC && SC.personas && SC.personas[index]) return SC.personas[index];
+            }
             return null;
         },
         /**

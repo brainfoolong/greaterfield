@@ -302,3 +302,12 @@
 .gf-btn:active{
     background: rgba(255, 255, 255, 0.4);
 }
+
+#gf-modal .translations .entry{
+    padding:10px;
+    border-bottom: 1px solid #333333;
+}
+
+#gf-modal .translations .entry textarea{
+    height:60px;
+}
