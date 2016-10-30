@@ -33,6 +33,7 @@
     "emblem.share.callback.4": "Emblem already exist in gallery",
     "import": "Import",
     "loading": "Please wait a moment, progress has started already...",
+    "login.required" : "Please login - This action requires a logged in user",
     "reload": "A page reload may be required - press F5 to reload the page",
     "report": "Report",
     "send": "Send",

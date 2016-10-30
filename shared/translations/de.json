@@ -28,11 +28,9 @@
     "emblem.share.callback.3": "Konnte Emblem nicht speichern, keine richtige Bildurl gefunden",
     "emblem.share.callback.4": "Emblem existiert bereits in der Gallery",
     "loading": "Bitte warte einen Moment, der Prozess wurde schon gestartet...",
+    "login.required" : "Login benötigt - Diese Aktion benötigt einen eingeloggten Benutzer",
     "reload": "Ein Reload der Seite ist vielleicht notwendig - Drücke F5 um die Seite zu aktualisieren",
     "report": "Melden",
     "send": "Senden",
-    "translations.lang.error": "EN ist nicht editierbar - Es ist Quelle für die Übersetzungen",
-    "translations.text.1": "Hilf uns Greaterfield in weitere Sprachen zu übersetzen. Mit diesem Editor kannst du das sehr einfach machen.",
-    "translations.text.2": "Leere Felder bedeuten das die englische Übersetzung genommen wird. Lass es leer wenn du keine Übersetzung hast oder der Meinung bist das Englisch der beste Weg ist.",
-    "translations.text.3": "Die Sprache in die du jetzt übersetzt ist: {lang}"
+    "translations.text.1": "Hilf uns Greaterfield in weitere Sprachen zu übersetzen. Mit diesem Editor kannst du das sehr einfach machen."
 }

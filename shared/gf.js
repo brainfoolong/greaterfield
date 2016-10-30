@@ -598,6 +598,10 @@ var gf = {
                         <div><span class="gf-btn pull gf-hidden">Send changes to GitHub</span> <span class="gf-btn next gf-hidden">Next step -> Open external window to authorize on github</span></div>
                     </div>
                 `);
+                if(!gf.frontend.getCurrentPersona()){
+                    gf.frontend.toast("error", gf.translations.get("login.required"));
+                    return;
+                }
                 var user = gf.frontend.getCurrentPersona().displayName;
                 // get original english translations
                 $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield/master/shared/translations/en.json?" + Math.random(), function (enValues) {
@@ -718,7 +722,7 @@ var gf = {
                                             <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-${mode}/master/${mode}/${dir.name}/screenshot.jpg"></div>
                                             <div class="column">
                                                 <div class="title"><div class="toggle ${cl}" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
-                                                <div class="author">${gf.translations.get("author")}: ${manifest.author}</div>
+                                                <div class="author">${gf.translations.get("author")}: <a href="https://github.com/${manifest.author}" target="_blank">${manifest.author}</a> - <a href="https://github.com/brainfoolong/greaterfield-plugins/tree/master/plugins/${encodeURIComponent(dir.name)}" target="_blank">Source on GitHub</a></div>
                                                 <div class="description">${manifest.description}</div>
                                             </div>
                                         </div>
