@@ -4,7 +4,6 @@ html, body{
     background: -webkit-radial-gradient(center, ellipse cover,  #333333 0%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
     background: radial-gradient(ellipse at center,  #333333 0%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
 }
 
 body {
@@ -84,7 +83,7 @@ nav a:visited{
     white-space: nowrap;
     display: block;
     width:40%;
-    font-weight: normal;
+    font-weight: bold;
 }
 
 .footer {
