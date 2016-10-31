@@ -33,6 +33,7 @@
     "emblem.share.callback.2": "Could not save emblem, wrong image found",
     "emblem.share.callback.3": "Could not save emblem, no valid image url found",
     "emblem.share.callback.4": "Emblem already exist in gallery",
+    "greaterfield.description": "Greaterfield is a browser extension that give you more power to your battlefield companion and the battlefield forums. With seamless integration in mind we have created a smooth and great addition for you, with cool new features like: Public emblem gallery, teamspeak viewer integration, community themes and plugins, and many more.",
     "import": "Import",
     "loading": "Please wait a moment, progress has started already...",
     "login.required" : "Please login - This action requires a logged in user",
