@@ -160,10 +160,10 @@ var gf = {
             embedMenuIcon: function () {
                 var icon = $("#gf-icon");
                 if (icon.length) return;
-                icon = $('<div id="gf-icon" class="gf"><img src="' + gf.sharedFolder + '/img/menu_icon.png"></div>');
+                icon = $('<div id="gf-icon" class="gf"><div><img src="' + gf.sharedFolder + '/img/menu_icon.png"></div></div>');
                 $("body").append(icon).append('<div id="gf-menu" class="gf"></div>');
-                icon.on("click", function () {
-                    $("#gf-menu, #gf-icon").toggleClass("active");
+                icon.find("div").on("click", function () {
+                    $("#gf-menu, #gf-icon, #gf-tsviewer-icon").toggleClass("active");
                     var menu = $("#gf-menu");
                     menu.html('');
                     if (menu.hasClass("active")) {
@@ -480,6 +480,57 @@ var gf = {
                         gf.frontend.modal(html);
                     });
                 })();
+            },
+            tsviewer: function () {
+                if ($("#gf-tsviewer-icon").length) return;
+                var icon = $('<div><img id="gf-tsviewer-icon" src="' + gf.sharedFolder + '/img/ts_icon.png"></div>');
+                $("#gf-icon").append(icon);
+                icon.on("click", function () {
+                    $("#gf-menu, #gf-icon, #gf-tsviewer-icon").toggleClass("active");
+                    var menu = $("#gf-menu");
+                    menu.html(`
+                        <select class="gf-input"></select><br/><br/>
+                        <div class="container"></div>
+                    `);
+
+                    var loadViewer = function () {
+                        var id = gf.storage.get("tsviewer.id", 1015984);
+                        menu.find("select").html('').append('<option value="1015984">Greaterfield TS</option>');
+                        gf.tools.each(gf.storage.get("tsviewer.custom.ids", {}), function (id, name) {
+                            menu.find("select").append('<option value="' + id + '">' + name + '</option>')
+                        });
+                        menu.find("select").append('<option value="add">Add new instance</option>').val(id);
+                        menu.find(".container").attr("id", "ts3viewer_" + id);
+                        var ts3v_url_1 = "//www.tsviewer.com/ts3viewer.php?ID=" + id + "&text=ffffff&text_size=12&text_family=1&js=1&text_s_weight=bold&text_s_style=normal&text_s_variant=normal&text_s_decoration=none&text_s_weight_h=bold&text_s_style_h=normal&text_s_variant_h=normal&text_s_decoration_h=underline&text_i_weight=normal&text_i_style=normal&text_i_variant=normal&text_i_decoration=none&text_i_weight_h=normal&text_i_style_h=normal&text_i_variant_h=normal&text_i_decoration_h=underline&text_c_weight=normal&text_c_style=normal&text_c_variant=normal&text_c_decoration=none&text_c_weight_h=normal&text_c_style_h=normal&text_c_variant_h=normal&text_c_decoration_h=underline&text_u_weight=bold&text_u_style=normal&text_u_variant=normal&text_u_decoration=none&text_u_weight_h=bold&text_u_style_h=normal&text_u_variant_h=normal&text_u_decoration_h=none";
+                        ts3v_display.init(ts3v_url_1, id, 100);
+                    };
+                    menu.find("select").on("change", function () {
+                        if (this.value == "add") {
+                            var p = prompt(gf.translations.get("tsviewer.add.instance"), "");
+                            if (p) {
+                                var p2 = prompt(gf.translations.get("tsviewer.add.instance.name"), "");
+                                var id = p.match(/([0-9]+)/)[1];
+                                if (id && p2) {
+                                    gf.storage.set("tsviewer.id", id);
+                                    var ids = gf.storage.get("tsviewer.custom.ids", {});
+                                    ids[id] = p2;
+                                    gf.storage.set("tsviewer.custom.ids", ids);
+                                }
+                            }
+                            loadViewer();
+                        } else {
+                            gf.storage.set("tsviewer.id", $(this).val());
+                            loadViewer();
+                        }
+                    });
+                    if (menu.hasClass("active")) {
+                        if (typeof ts3v_display == "undefined") {
+                            $.getScript("//static.tsviewer.com/short_expire/js/ts3viewer_loader.js", loadViewer);
+                        } else {
+                            loadViewer();
+                        }
+                    }
+                });
             }
         }
     },
@@ -582,6 +633,7 @@ var gf = {
             "emblems": {"init": true, "section": "general"},
             "plugins": {"init": true, "section": "general"},
             "themes": {"init": true, "section": "general"},
+            "tsviewer": {"init": true, "section": "general"},
             "translations": {"init": false, "section": "gf"}
         },
         /**
@@ -598,14 +650,14 @@ var gf = {
                         <div><span class="gf-btn pull gf-hidden">Send changes to GitHub</span> <span class="gf-btn next gf-hidden">Next step -> Open external window to authorize on github</span></div>
                     </div>
                 `);
-                if(!gf.frontend.getCurrentPersona()){
+                if (!gf.frontend.getCurrentPersona()) {
                     gf.frontend.toast("error", gf.translations.get("login.required"));
                     return;
                 }
                 var user = gf.frontend.getCurrentPersona().displayName;
                 // get original english translations
                 $.getJSON("https://raw.githubusercontent.com/brainfoolong/greaterfield/master/shared/translations/en.json?" + Math.random(), function (enValues) {
-                    if(gf.translations.locale == "en"){
+                    if (gf.translations.locale == "en") {
                         gf.frontend.toast("error", gf.translations.get("translations.lang.error"))
                         return;
                     }
@@ -678,26 +730,27 @@ var gf = {
                     };
                 }
                 var html = $(`
-                        <div class="plugins-themes">
-                            ${gf.translations.get("config." + mode + ".handler.1")}<br/>
-                            <a href="${u.url}" target="_blank">${u.url}</a><br/><br/>
-                            <div class="entries">${gf.translations.get("loading")}</div>
-                            <div class="entries">
-                                <div class="entry develop">
-                                            <div class="screenshot"></div>
-                                            <div class="column">
-                                                <div class="title">
-                                                    <div class="toggle" data-storage-key="${u.singular}.development"><div class="handle"></div></div> 
-                                                    ${gf.translations.get("config." + mode + ".deventry")}
-                                                </div>
-                                                <div class="description">${gf.translations.get("config." + mode + ".handler.2")}
-                                                <input type="text" class="gf-input">
-                                                </div>
-                                            </div>
-                                        </div>                                                            
-                                </div>
+                    <div class="plugins-themes">
+                        ${gf.translations.get("config." + mode + ".handler.1")}<br/>
+                        <a href="${u.url}" target="_blank">${u.url}</a><br/><br/>
+                        <div class="entries">${gf.translations.get("loading")}</div>
+                        <div class="entries">
+                            <div class="entry develop">
+                                    <div class="screenshot"></div>
+                                    <div class="column">
+                                        <div class="title">
+                                            <div class="toggle" data-storage-key="${u.singular}.development"><div class="handle"></div></div> 
+                                            ${gf.translations.get("config." + mode + ".deventry")}
+                                        </div>
+                                        <div class="description">${gf.translations.get("config." + mode + ".handler.2")}
+                                            <input type="text" class="gf-input">
+                                        </div>
+                                    </div>
+                                </div>                                                            
+                            </div>
                         </div>
-                    `);
+                    </div>
+                `);
                 html.find(".develop input").on("input blur", function () {
                     var url = this.value;
                     if ((mode == "themes" && !url.match(/^http.*?\.css/i)) || (mode == "plugins" && !url.match(/^http.*?\.js/i))) {
@@ -716,7 +769,12 @@ var gf = {
                         // get manifest file
                         $.getJSON('https://raw.githubusercontent.com/brainfoolong/greaterfield-' + mode + '/master/' + mode + '/' + dir.name + '/manifest.json', function (manifest) {
                             if (manifest.active === true) {
-                                var cl = dir.name == gf.storage.get(u.singular + ".stable.name") ? 'active' : "";
+                                if (mode == "themes") {
+                                    var cl = dir.name == gf.storage.get(u.singular + ".stable.name") ? 'active' : "";
+                                } else {
+                                    var ids = gf.storage.get(u.singular + ".stable.names", []);
+                                    var cl = $.inArray(dir.name, ids) != -1 ? "active" : "";
+                                }
                                 t.append(`
                                         <div class="entry">
                                             <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-${mode}/master/${mode}/${dir.name}/screenshot.jpg"></div>

@@ -1,10 +1,14 @@
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/logo-grey-bg.png" width="100%" />
+
 # Greaterfield
 Improvements for Battlefield Web Companion and the Battlefield Forums!
 
 **Note:** This extension is currently in development, no release yet.
 First stable version ETA: Nov. 2016
 
-<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/screenshots/themes.gif" width="300" />
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/1.jpg" width="33%" />
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/2.jpg" width="33%" />
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/3.jpg" width="33%" />
 
 # What to contribute?
 * Themes - https://github.com/brainfoolong/greaterfield-themes

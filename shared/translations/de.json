@@ -28,7 +28,7 @@
     "emblem.share.callback.3": "Konnte Emblem nicht speichern, keine richtige Bildurl gefunden",
     "emblem.share.callback.4": "Emblem existiert bereits in der Gallery",
     "loading": "Bitte warte einen Moment, der Prozess wurde schon gestartet...",
-    "login.required" : "Login benötigt - Diese Aktion benötigt einen eingeloggten Benutzer",
+    "login.required": "Login benötigt - Diese Aktion benötigt einen eingeloggten Benutzer",
     "reload": "Ein Reload der Seite ist vielleicht notwendig - Drücke F5 um die Seite zu aktualisieren",
     "report": "Melden",
     "send": "Senden",

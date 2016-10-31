@@ -14,6 +14,8 @@
     "config.themes.handler.1": "Give the website a better look with this community made themes. Are you a CSS artist? Add your own theme here, visit:",
     "config.themes.handler.2": "Enter an URL to a CSS file in the field below, so you can quickly develop a theme in combination with GitHub\/Dropbox or whatever. Just point to your css url. Don't forget to enable the development entry  with the tiny toggle above. After you have entered the link just reload the page. If you want to add a theme to our themes in the list above, head to the above mentioned link :)",
     "config.themes.info": "Get your hands on a new look for this website.",
+    "config.tsviewer": "Teamspeak Viewer",
+    "config.tsviewer.info": "Implement the TS Viewer from tsviewer.com. ",
     "config.translations": "Translations",
     "config.translations.info": "Add missing translations easily with this editor.",
     "emblem.code.import": "Import from Code",
@@ -31,6 +33,7 @@
     "emblem.share.callback.2": "Could not save emblem, wrong image found",
     "emblem.share.callback.3": "Could not save emblem, no valid image url found",
     "emblem.share.callback.4": "Emblem already exist in gallery",
+    "greaterfield.description": "Greaterfield is a browser extension that give you more power to your battlefield companion and the battlefield forums. With seamless integration in mind we have created a smooth and great addition for you, with cool new features like: Public emblem gallery, teamspeak viewer integration, community themes and plugins, and many more.",
     "import": "Import",
     "loading": "Please wait a moment, progress has started already...",
     "login.required" : "Please login - This action requires a logged in user",
@@ -40,5 +43,7 @@
     "translations.text.1": "Help us to translate greaterfield into other languages. With this editor you easily can translate missing values into your current language.",
     "translations.text.2": "Empty fields mean the EN translation will be used. Leave it empty when you don't have a translation for it, or when english is the best way for the key.",
     "translations.text.3": "Current language you now translate into: {lang}",
-    "translations.lang.error": "EN is not editable - It's the root source for translations"
+    "translations.lang.error": "EN is not editable - It's the root source for translations",
+    "tsviewer.add.instance": "Add a new instance for a Teamspeak viewer\nAdd the URL to your tsviewer.com teamspeak profile, or just add the ID number",
+    "tsviewer.add.instance.name": "Enter a name for your instance"
 }
