@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/logo-grey-bg.png" width="100%" />
+
 # Greaterfield
 Improvements for Battlefield Web Companion and the Battlefield Forums!
 
