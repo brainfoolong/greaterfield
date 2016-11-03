@@ -37,6 +37,11 @@ var gf = {
         if (classAdd == "") return false;
         $("html").addClass(classAdd);
 
+        // override apiurl
+        if(gf.storage.get("homepage.url")){
+            gf.homepage = gf.storage.get("homepage.url");
+        }
+
         // domchange observer
         var observer = new MutationObserver(gf.domchange.onMutation);
         observer.observe(document.body, {childList: true, subtree: true});
@@ -661,12 +666,33 @@ var gf = {
             "themes": {"init": true, "section": "general"},
             "tsviewer": {"init": true, "section": "general"},
             // "bf4stats": {"init": true, "section": "general"},
-            "translations": {"init": false, "section": "gf"}
+            "translations": {"init": false, "section": "gf"},
+            "dev": {"init": false, "section": "gf"}
         },
         /**
          * The available config option click handlers
          */
         handlers: {
+            /**
+             * Developer handler
+             */
+            dev: function () {
+                var html = $(`
+                    <div class="dev">
+                        <div><b>Api URL</b></div>
+                        <div><input type="text" data-storage-key="homepage.url" class="api-url gf-input"></div>
+                    </div>
+                `);
+
+                html.on("input change", ":input[data-storage-key]", function () {
+                    gf.storage.set($(this).attr("data-storage-key"), this.value);
+                });
+
+                gf.frontend.modal(html);
+            },
+            /**
+             * Translations handler
+             */
             translations: function () {
                 var html = $(`
                     <div class="translations">
@@ -734,9 +760,15 @@ var gf = {
                 });
                 gf.frontend.modal(html);
             },
+            /**
+             * Plugins handler
+             */
             plugins: function () {
                 gf.config.handlers.themesAndPlugins("plugins");
             },
+            /**
+             * Themes handler
+             */
             themes: function () {
                 gf.config.handlers.themesAndPlugins("themes");
             },
