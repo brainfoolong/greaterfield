@@ -22,7 +22,7 @@
     "emblem.import.battlelog": "Importar do Companion",
     "emblem.import.battlelog.copied": "Código copiado para a área de transferência - Entre em Emblemas do Companion e clique em 'Importar do Código'",
     "emblem.import.error.1": "Importação anterior em progresso, aguarde até o término!",
-    "emblem.import.notice": "You can only import an emblem when you have all shapes unlocked that are required by the emblem. Otherwise it will fail silently and do not import the emblem.",
+    "emblem.import.notice": "Você só pode importar um Emblema quando tiver todos os shapes requiridos pelo emblema desbloqueados. Caso contrário a importação irá falhar silenciosamente e a importação nãos erá feita.",
     "emblem.report.done": "Obrigado por reportar. Checaremos em breve",
     "emblem.report.error.1": "Por favor, dê mais informações (em inglês)",
     "emblem.report.error.2": "Código de Emblema incorreto",
@@ -39,6 +39,6 @@
     "send": "Enviar",
     "translations.text.1": "Ajude-nos a traduzir o Greaterfield para outras linguagens. Com este editor você pode traduzir frases faltantes na sua linguagem.",
     "translations.text.2": "Espaços vazios significam que alinguagem Inglês será usada. Deixe vazio se você não tem a tradução pra isso ou quando o original (em inglês) é melhor.",
-    "translations.text.3": "Current language you now translate into: {lang}",
+    "translations.text.3": "Idioma atual no qual você está traduzindo: {lang}",
     "translations.lang.error": "Inglês (EN) não é editável - Esta linguagem é o padrão e a fonte para as traduções"
 }
