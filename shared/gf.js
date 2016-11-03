@@ -13,7 +13,6 @@ var gf = {
      * The homepage url
      */
     homepage: "https://greaterfield.com",
-    //homepage: "https://localhost/gf",
 
     /**
      * The current version, injected by init scripts

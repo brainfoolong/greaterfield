@@ -29,3 +29,8 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
     * Enable add-on debugging
     * Click 'Load Temporary Add-on' and point to the cloned repository folder -> `manifest.json`
 
+# Coding standards and guide lines
+* JS strict mode
+* ECMA Script 6 support (Template literals, classes, etc...) http://es6-features.org/
+* PSR2 coding standards (as best it can fit for javascript/css, utf-8, unix line ends, 4 space indents, etc...) http://www.php-fig.org/psr/psr-2/
+* JSDoc for each method and object variable, as best as possible
