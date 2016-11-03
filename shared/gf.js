@@ -96,10 +96,13 @@ var gf = {
          */
         matchUrlParts: function (parts) {
             if (!gf.url.currentUrlParts) return false;
+            var valid = true;
             gf.tools.each(parts, function (i, part) {
-                if ($.inArray(part, gf.url.currentUrlParts) == -1) return false;
+                if ($.inArray(part, gf.url.currentUrlParts) == -1) {
+                    valid = false;
+                }
             });
-            return true;
+            return valid;
         }
     },
 
@@ -481,6 +484,9 @@ var gf = {
                     });
                 })();
             },
+            /**
+             * Teamspeak viewer integration
+             */
             tsviewer: function () {
                 if ($("#gf-tsviewer-icon").length) return;
                 var icon = $('<div><img id="gf-tsviewer-icon" src="' + gf.sharedFolder + '/img/ts_icon.png"></div>');
@@ -531,6 +537,27 @@ var gf = {
                         }
                     }
                 });
+            },
+            /**
+             * Bf4stats ingegration
+             */
+            bf4stats: function () {
+                // stats iframe
+                (function () {
+                    if (!gf.url.matchUrlParts(["companion", "career", "bf4"]) || gf.url.matchUrlParts(["battlelog"])) return;
+                    var data = gf.frontend.getLastJsonRpcCall("Stats.getCareerForOwnedGamesByPersonaId");
+                    if (!data || !data.callbackData) return;
+                    var username = $(".career-profile div.username");
+                    if (!gf.tools.isVirgin(username, "bf4stats")) return;
+                    var platform = $(".career-profile span.platform-logo");
+                    platform = platform.text().trim().toLowerCase();
+                    var url = 'http://bf4stats.com/' + platform + '/' + username.text().trim() + '/bblogframe?timePlayed=' + data.callbackData.gameStats.bf4.timePlayed;
+                    $(".row.career-game-section").last().after(`
+                        <div class="row no-spacing career-game-section">
+                        <iframe src="${url}" style="width:100%; height:400px; overflow-x:hidden; overflow-y:auto; border:0px; margin:0px; padding:0px;" scrollbars="auto"></iframe>
+                        </div>
+                    `);
+                })();
             }
         }
     },
@@ -634,6 +661,7 @@ var gf = {
             "plugins": {"init": true, "section": "general"},
             "themes": {"init": true, "section": "general"},
             "tsviewer": {"init": true, "section": "general"},
+            // "bf4stats": {"init": true, "section": "general"},
             "translations": {"init": false, "section": "gf"}
         },
         /**
@@ -1083,6 +1111,43 @@ var gf = {
             return null;
         },
         /**
+         * Cache all json rpc calls from the site
+         */
+        _jsonRpcCache: [],
+        /**
+         * Original json rpc function
+         */
+        _jsonRpcOriginal: null,
+        /**
+         * Json rpc handler, override the site native handler to track requests
+         * @param {string} action
+         * @param {*} data
+         * @param {=function} callback
+         * @param {=function} errback
+         */
+        jsonRpc: function (action, data, callback, errback) {
+            var o = {"action": action, "data": data, "callbackData": null};
+            gf.frontend._jsonRpcCache.push(o);
+            gf.frontend._jsonRpcCache = gf.frontend._jsonRpcCache.slice(-20);
+            gf.frontend._jsonRpcOriginal.apply(SC.client, [action, data, function (data) {
+                o.callbackData = data;
+                if (callback) callback(data);
+            }, errback]);
+        },
+        /**
+         * Get last json rpc call with given action
+         * @param {string} action
+         * @returns {object|null}
+         */
+        getLastJsonRpcCall: function (action) {
+            var r = null;
+            for (var i in gf.frontend._jsonRpcCache) {
+                var c = gf.frontend._jsonRpcCache[i];
+                if (c.action == action) r = c;
+            }
+            return r;
+        },
+        /**
          * Send request via jsonRPC to frontend
          * @param {string} action
          * @param {*} data
@@ -1171,3 +1236,6 @@ gf.backend.send("init", null, function (msgData) {
     });
 });
 
+// override json rpc handler
+gf.frontend._jsonRpcOriginal = SC.client.jsonRpc;
+SC.client.jsonRpc = gf.frontend.jsonRpc;
