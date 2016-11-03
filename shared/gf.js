@@ -683,7 +683,6 @@ var gf = {
                         <div><input type="text" data-storage-key="homepage.url" class="api-url gf-input"></div>
                     </div>
                 `);
-
                 html.on("input change", ":input[data-storage-key]", function () {
                     gf.storage.set($(this).attr("data-storage-key"), this.value);
                 });
