@@ -13,4 +13,11 @@ $(function () {
 
         });
     }).triggerHandler("scroll");
+
+    // get latest release version
+    $.getJSON("https://api.github.com/repos/brainfoolong/greaterfield/releases" , function (data) {
+        if(data[0] && data[0].tag_name){
+            $(".version").html(data[0].tag_name);
+        }
+    });
 });

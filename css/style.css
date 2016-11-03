@@ -60,9 +60,7 @@ nav a:visited{
 
 .download a{
     display: inline-block;
-    background: #ff391f; /* Old browsers */
-    background: linear-gradient(to bottom,  #f17f1a 0%, #b36312 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff391f', endColorstr='#c40000',GradientType=0 ); /* IE6-9 */
+    background: #ff391f;
     color:white;
     text-shadow: black 1px 1px 0px;
     padding:10px;
@@ -71,19 +69,11 @@ nav a:visited{
     font-size: 140%;
     border-radius:10px;
     transition: 0.3s;
-    border-bottom: 10px solid white;
     box-shadow: black 0 0 10px;
     margin-right: 30px;
 }
 .download a:hover{
-    border-bottom: 10px solid transparent;
-}
-
-.download a span{
-    white-space: nowrap;
-    display: block;
-    width:40%;
-    font-weight: bold;
+    background: #ff2000;
 }
 
 .footer {
