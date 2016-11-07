@@ -38,7 +38,7 @@ var gf = {
         $("html").addClass(classAdd);
 
         // override apiurl
-        if(gf.storage.get("homepage.url")){
+        if(gf.storage.get("config.dev") && gf.storage.get("homepage.url")){
             gf.homepage = gf.storage.get("homepage.url");
         }
 
@@ -685,6 +685,8 @@ var gf = {
                 `);
                 html.on("input change", ":input[data-storage-key]", function () {
                     gf.storage.set($(this).attr("data-storage-key"), this.value);
+                }).find(":input[data-storage-key]").each(function () {
+                    $(this).val(gf.storage.get($(this).attr("data-storage-key")));
                 });
 
                 gf.frontend.modal(html);
