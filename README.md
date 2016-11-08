@@ -3,9 +3,10 @@
 # Greaterfield
 Improvements for Battlefield Web Companion and the Battlefield Forums!
 
-# Downloads - Stable
+# Downloads - Beta
 * Google Chrome: https://chrome.google.com/webstore/detail/gnpnfbnogbhgbcgejjdanillfkoljdlg
-* Firefox: Coming soon
+* Firefox: https://github.com/brainfoolong/greaterfield/releases - Download and install the XPI file
+* **Note:** Firefox is not in Mozilla AMO store because we have integrated plugins that are being loaded directly from our github repository, which is forbidden by mozilla rules. Chrome is fine, though. So, you have to install it manually.
 
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/1.jpg" width="33%" />
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/2.jpg" width="33%" />
