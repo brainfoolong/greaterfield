@@ -14,7 +14,7 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 # What to contribute?
 * Themes - https://github.com/brainfoolong/greaterfield-themes
 * Plugins - https://github.com/brainfoolong/greaterfield-plugins
-* Translations - Fork this project, go to the `shared/translations` folder and modify the files or add new ones (only the companion available languages). Send a pull request when you're done.
+* Translations - Install extension, Menu => Translations - Those changes will than be submitted to our github repository.
 * Core - Coming soon
 
 # How to install the development version of this extension?
