@@ -6,4 +6,4 @@ if exist %file% (
     del %file%
 )
 
-zip -r -S %file% . -x .git/* .gitignore .editorconfig .idea pack-extension.bat
+zip -r -S %file% . -x .git/* .gitignore .gitattributes .editorconfig .idea pack-extension.bat
