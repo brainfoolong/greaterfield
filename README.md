@@ -33,5 +33,5 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 # Coding standards and guide lines
 * JS strict mode
 * ECMA Script 6 support (Template literals, classes, etc...) http://es6-features.org/
-* PSR2 coding standards (as best it can fit for javascript/css, utf-8, unix line ends, 4 space indents, etc...) http://www.php-fig.org/psr/psr-2/
+* PSR2 coding standards (as best it can fit for javascript/css, utf-8, crlf line ends, 4 space indents, etc...) http://www.php-fig.org/psr/psr-2/
 * JSDoc for each method and object variable, as best as possible
