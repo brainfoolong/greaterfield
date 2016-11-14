@@ -172,7 +172,7 @@ var gf = {
                 icon.find("div").on("click", function () {
                     $("#gf-menu, #gf-icon, #gf-tsviewer-icon").toggleClass("active");
                     var menu = $("#gf-menu");
-                    menu.html('');
+                    menu.text('');
                     if (menu.hasClass("active")) {
                         var sections = {};
                         gf.tools.each(gf.config.keys, function (k, v) {
@@ -200,7 +200,7 @@ var gf = {
                                     var option = $(`<div class="option"><div class="toggle" data-storage-key="${storageKey}"><div class="handle"></div></div><div class="text"></div></div>`);
                                     var info = gf.translations.get(storageKey + ".info");
                                     if (info != null) {
-                                        option.append($('<div class="info"></div>').html(info));
+                                        option.append($('<div class="info"></div>').text(info));
                                     }
                                     option.find(".text").append(html);
                                     section.append(option);
@@ -367,7 +367,7 @@ var gf = {
                                 if (aV < bV) return 1;
                                 return 0;
                             });
-                            html.find(".entries").html('');
+                            html.find(".entries").text('');
                             gf.tools.each(entries, function (k, emblem) {
                                 var entry = $(`
                                     <div class="entry gf-hidden" data-id="${emblem.id}">
@@ -505,7 +505,7 @@ var gf = {
 
                     var loadViewer = function () {
                         var id = gf.storage.get("tsviewer.id", 1015984);
-                        menu.find("select").html('').append('<option value="1015984">Greaterfield TS</option>');
+                        menu.find("select").text('').append('<option value="1015984">Greaterfield TS</option>');
                         gf.tools.each(gf.storage.get("tsviewer.custom.ids", {}), function (id, name) {
                             menu.find("select").append('<option value="' + id + '">' + name + '</option>')
                         });
@@ -729,7 +729,7 @@ var gf = {
                                 </div>
                             `);
                             var v = localeValues[key] || "";
-                            entry.find(".original").html(enValues[key].replace(/</ig, "&lt;").replace(/>/ig, "&gt;"));
+                            entry.find(".original").html(gf.tools.escapeHtml(enValues[key]).replace(/\n/g, "<br/>"));
                             entry.find("textarea").val(v);
                             html.find(".values").append(entry);
                         });
@@ -822,7 +822,7 @@ var gf = {
 
                 $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-' + mode + '/contents/' + mode, function (data) {
                     var t = html.find(".entries").first();
-                    t.html('');
+                    t.text('');
                     gf.tools.each(data, function (k, dir) {
                         // ignore base entry
                         if (dir.name == "base") return true;
@@ -1247,6 +1247,26 @@ var gf = {
                     if (callback(i, arr[i]) === false) return false;
                 }
             }
+        },
+        /**
+         * The escape html map
+         */
+        _escapeHtmlMap : {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        },
+        /**
+         * Escape html characters for secure dom injection
+         * @param {string} string
+         */
+        escapeHtml : function (string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return gf.tools._escapeHtmlMap[s];
+            });
         }
     }
 };
