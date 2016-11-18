@@ -7,6 +7,7 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 * Google Chrome: https://chrome.google.com/webstore/detail/gnpnfbnogbhgbcgejjdanillfkoljdlg
 * Firefox: https://github.com/brainfoolong/greaterfield/releases - Download and install the XPI file
 * **Note:** Firefox is not in Mozilla AMO store because we have integrated plugins that are being loaded directly from our github repository, which is forbidden by mozilla rules. Chrome is fine, though. So, you have to install it manually. We do not provide automatic update for firefox add-ons, so you have to check updates manually. Firefox is too restrictive in their policy for us to work good with it. To make it work good, we have to remove community plugins.
+* **Note2:** We will try a new run in Mozilla AMO store because we remove plugin support from greaterfield. Contribute directly in the core instead. It's even easier as plugin development.
 
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/1.jpg" width="33%" />
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/2.jpg" width="33%" />
@@ -14,11 +15,12 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 
 # What to contribute?
 * Themes - https://github.com/brainfoolong/greaterfield-themes
-* Plugins - https://github.com/brainfoolong/greaterfield-plugins
+* Plugins - Dropped, contribute to the core instead. It's even easier as plugin development.
 * Translations - Install extension, Menu => Translations - Those changes will than be submitted to our github repository.
-* Core - Coming soon
+* Core - Guide coming soon
 
 # How to install the development version of this extension?
+This is the default way for development with for this extension. It's super fast an agile, every change is instantly testable when you just reload the page.
 * Clone the master repository to disk
 * Chrome
     * Open the Extensions window
