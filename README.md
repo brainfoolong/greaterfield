@@ -20,7 +20,7 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 * Core - Guide coming soon
 
 # How to install the development version of this extension?
-This is the default way for development with for this extension. It's super fast an agile, every change is instantly testable when you just reload the page.
+This is the default way for development for this extension. It's super fast and agile, every change is instantly testable when you just reload the page.
 * Clone the master repository to disk
 * Chrome
     * Open the Extensions window
