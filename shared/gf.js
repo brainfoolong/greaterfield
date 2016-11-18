@@ -182,9 +182,7 @@ gf.domchange.events.embedMenuIcon = function () {
             gf.tools.each(gf.config.keys, function (k, v) {
                 sections[v.section] = v.section;
             });
-            menu.append(`
-                            <h3 class="font-futura">GreaterField v${gf.version}!</h3>
-                        `);
+            menu.append(`<h3 class="font-futura">GreaterField v${gf.version}!</h3>`);
 
             // create for each section block
             gf.tools.each(sections, function (k, sectionId) {
@@ -224,9 +222,9 @@ gf.domchange.events.emblems = function () {
         var e = $("#emblem-action-save");
         if (!gf.tools.isVirgin(e) || $("#gf-emblem-import").length) return;
         var btn = $(`<button id="gf-emblem-import" class="btn btn-primary pull-right margin-left">
-                         <span>${gf.translations.get("emblem.import.battlelog")}</span>
-                         </button>
-                    `);
+             <span>${gf.translations.get("emblem.import.battlelog")}</span>
+             </button>
+        `);
         e.after(btn);
         btn.on("click", function () {
             gf.storage.set("emblem.import.code", JSON.stringify(emblem.emblem.data.objects));
@@ -288,17 +286,17 @@ gf.domchange.events.emblems = function () {
         e.prepend(btn);
         btn.on("click", function () {
             var html = $(`
-                            <div class="emblem-gallery">
-                                <div>${gf.translations.get("emblem.import.notice")}</div><br/>
-                                <div class="filters">
-                                    <span class="gf-btn" data-id="newest">Newest</span> 
-                                    <span class="gf-btn" data-id="top">Top</span> 
-                                    <span class="gf-btn" data-id="random">Random</span>
-                                </div>
-                                <div class="entries"></div>
-                                <div class="more"><span class="gf-btn">Show more emblems</span></div>
-                            </div>
-                        `);
+                <div class="emblem-gallery">
+                    <div>${gf.translations.get("emblem.import.notice")}</div><br/>
+                    <div class="filters">
+                        <span class="gf-btn" data-id="newest">Newest</span> 
+                        <span class="gf-btn" data-id="top">Top</span> 
+                        <span class="gf-btn" data-id="random">Random</span>
+                    </div>
+                    <div class="entries"></div>
+                    <div class="more"><span class="gf-btn">Show more emblems</span></div>
+                </div>
+            `);
             var entries = [];
             var showEntries = function (filter) {
                 entries.sort(function (a, b) {
@@ -323,12 +321,12 @@ gf.domchange.events.emblems = function () {
                 html.find(".entries").text('');
                 gf.tools.each(entries, function (k, emblem) {
                     var entry = $(`
-                                    <div class="entry gf-hidden" data-id="${emblem.id}">
-                                        <div class="image"><img data-src="${emblem.image}"></div>
-                                        <div class="gf-btn import">${gf.translations.get("import")}</div>
-                                        <div class="gf-btn report">${gf.translations.get("report")}</div>
-                                    </div>
-                                `);
+                        <div class="entry gf-hidden" data-id="${emblem.id}">
+                            <div class="image"><img data-src="${emblem.image}"></div>
+                            <div class="gf-btn import">${gf.translations.get("import")}</div>
+                            <div class="gf-btn report">${gf.translations.get("report")}</div>
+                        </div>
+                    `);
                     html.find(".entries").append(entry);
                     if (gf.storage.get("emblem.report." + emblem.id)) {
                         entry.find(".report").remove();
@@ -357,12 +355,12 @@ gf.domchange.events.emblems = function () {
                 var id = $(this).closest(".entry").attr("data-id");
                 if (!gf.storage.get("emblem.report." + id)) {
                     var html = $(`
-                                    <div class="emblem-report">
-                                        ${gf.translations.get("emblem.report.text.1")}
-                                        <textarea class="gf-input"></textarea><br/>
-                                        <span class="gf-btn send">${gf.translations.get("send")}</span>
-                                    </div>
-                                `);
+                        <div class="emblem-report">
+                            ${gf.translations.get("emblem.report.text.1")}
+                            <textarea class="gf-input"></textarea><br/>
+                            <span class="gf-btn send">${gf.translations.get("send")}</span>
+                        </div>
+                    `);
                     html.on("click", ".send", function () {
                         var text = html.find("textarea").val().trim();
                         if (text.length < 10) {
@@ -410,13 +408,13 @@ gf.domchange.events.emblems = function () {
         e.prepend(importBtn);
         importBtn.on("click", function () {
             var html = $(`
-                            <div class="emblem-code-import">
-                                <div>${gf.translations.get("emblem.code.import.text.1")}</div>
-                                <div>${gf.translations.get("emblem.import.notice")}</div>
-                                <div><textarea class="gf-input"></textarea></div>
-                                <span class="gf-btn import">${gf.translations.get("import")}</span>
-                            </div>
-                        `);
+                <div class="emblem-code-import">
+                    <div>${gf.translations.get("emblem.code.import.text.1")}</div>
+                    <div>${gf.translations.get("emblem.import.notice")}</div>
+                    <div><textarea class="gf-input"></textarea></div>
+                    <span class="gf-btn import">${gf.translations.get("import")}</span>
+                </div>
+            `);
             html.find("textarea").val(gf.storage.get("emblem.import.code"));
             html.on("click", ".import", function () {
                 if (gf.cache.get("emblem.import")) {
@@ -453,9 +451,9 @@ gf.domchange.events.tsviewer = function () {
         $("#gf-menu, #gf-icon, #gf-tsviewer-icon").toggleClass("active");
         var menu = $("#gf-menu");
         menu.html(`
-                        <select class="gf-input"></select><br/><br/>
-                        <div class="container"></div>
-                    `);
+            <select class="gf-input"></select><br/><br/>
+            <div class="container"></div>
+        `);
 
         var loadViewer = function () {
             var id = gf.storage.get("tsviewer.id", 1015984);
@@ -525,10 +523,10 @@ gf.domchange.events.bf4stats = function () {
         platform = platform.text().trim().toLowerCase();
         var url = 'http://bf4stats.com/' + platform + '/' + username.text().trim() + '/bblogframe?timePlayed=' + data.callbackData.gameStats.bf4.timePlayed;
         $(".row.career-game-section").last().after(`
-                        <div class="row no-spacing career-game-section">
-                        <iframe src="${url}" style="width:100%; height:400px; overflow-x:hidden; overflow-y:auto; border:0px; margin:0px; padding:0px;" scrollbars="auto"></iframe>
-                        </div>
-                    `);
+            <div class="row no-spacing career-game-section">
+            <iframe src="${url}" style="width:100%; height:400px; overflow-x:hidden; overflow-y:auto; border:0px; margin:0px; padding:0px;" scrollbars="auto"></iframe>
+            </div>
+        `);
     })();
 };
 
@@ -559,11 +557,11 @@ gf.config.handlers = {};
  */
 gf.config.handlers.dev = function () {
     var html = $(`
-                    <div class="dev">
-                        <div><b>Api URL</b></div>
-                        <div><input type="text" data-storage-key="homepage.url" class="api-url gf-input"></div>
-                    </div>
-                `);
+        <div class="dev">
+            <div><b>Api URL</b></div>
+            <div><input type="text" data-storage-key="homepage.url" class="api-url gf-input"></div>
+        </div>
+    `);
     html.on("input change", ":input[data-storage-key]", function () {
         gf.storage.set($(this).attr("data-storage-key"), this.value);
     }).find(":input[data-storage-key]").each(function () {
@@ -578,14 +576,14 @@ gf.config.handlers.dev = function () {
  */
 gf.config.handlers.translations = function () {
     var html = $(`
-                    <div class="translations">
-                        <div>${gf.translations.get("translations.text.1")}</div>
-                        <div>${gf.translations.get("translations.text.2")}</div>
-                        <h3>${gf.translations.get("translations.text.3", {"lang": gf.translations.locale.toUpperCase()})}</h3>
-                        <div class="values"></div><br/><br/>
-                        <div><span class="gf-btn pull gf-hidden">Send changes to GitHub</span> <span class="gf-btn next gf-hidden">Next step -> Open external window to authorize on github</span></div>
-                    </div>
-                `);
+        <div class="translations">
+            <div>${gf.translations.get("translations.text.1")}</div>
+            <div>${gf.translations.get("translations.text.2")}</div>
+            <h3>${gf.translations.get("translations.text.3", {"lang": gf.translations.locale.toUpperCase()})}</h3>
+            <div class="values"></div><br/><br/>
+            <div><span class="gf-btn pull gf-hidden">Send changes to GitHub</span> <span class="gf-btn next gf-hidden">Next step -> Open external window to authorize on github</span></div>
+        </div>
+    `);
     if (!gf.frontend.getCurrentPersona()) {
         gf.frontend.toast("error", gf.translations.get("login.required"));
         return;
@@ -653,11 +651,13 @@ gf.config.handlers.themes = function () {
         gf.tools.each(themes, function (k, theme) {
             $.getJSON(gf.sharedFolder + "/themes/" + theme + "/manifest.json", function (manifestData) {
                 var cl = theme == gf.storage.get("theme.name") ? 'active' : "";
-                html.append(`<div class="entry">
-                                <div class="title"><div class="toggle ${cl}" data-name="${theme}"><div class="handle"></div></div> ${manifestData.name}</div>
-                                <div class="author">By <a href="${manifestData.author_url}" class="author_url" target="_blank">${manifestData.author}</a> - <a href="${manifestData.issue_url}" class="support" target="_blank">Support</a></div>
-                                <div class="description">${gf.tools.escapeHtml(manifestData.description)}</div>
-                            </div>`)
+                html.append(`
+                    <div class="entry">
+                        <div class="title"><div class="toggle ${cl}" data-name="${theme}"><div class="handle"></div></div> ${manifestData.name}</div>
+                        <div class="author">By <a href="${manifestData.author_url}" class="author_url" target="_blank">${manifestData.author}</a> - <a href="${manifestData.issue_url}" class="support" target="_blank">Support</a></div>
+                        <div class="description">${gf.tools.escapeHtml(manifestData.description)}</div>
+                    </div>
+                `);
             });
         });
     });
@@ -901,13 +901,13 @@ gf.frontend.modal = function (html) {
     $("#gf-modal").remove();
     if (!html) return;
     var e = $(`
-            <div id="gf-modal" class="gf">
-                <div class="inner">
-                    <div class="close">x</div>
-                    <div class="gf-content"></div>
-                </div>
+        <div id="gf-modal" class="gf">
+            <div class="inner">
+                <div class="close">x</div>
+                <div class="gf-content"></div>
             </div>
-            `);
+        </div>
+    `);
     e.find(".close").on("click", function () {
         $(this).closest("#gf-modal").remove();
     });
@@ -923,13 +923,13 @@ gf.frontend.modal = function (html) {
 gf.frontend.toast = function (mode, html) {
     $("#gf-toast").remove();
     var e = $(`
-            <div id="gf-toast" class="gf ${mode}">
-                <div class="inner">
-                    <div class="close">x</div>
-                    <div class="gf-content"></div>
-                </div>
+        <div id="gf-toast" class="gf ${mode}">
+            <div class="inner">
+                <div class="close">x</div>
+                <div class="gf-content"></div>
             </div>
-            `);
+        </div>
+    `);
     e.find(".close").on("click", function () {
         $(this).closest("#gf-toast").remove();
     });
@@ -1113,8 +1113,8 @@ gf.backend.send("init", null, function (msgData) {
     });
 });
 
-if(typeof SC != "undefined"){
-// override json rpc handler
+if (typeof SC != "undefined") {
+    // override json rpc handler
     gf.frontend._jsonRpcOriginal = SC.client.jsonRpc;
     SC.client.jsonRpc = gf.frontend.jsonRpc;
 }
