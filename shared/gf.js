@@ -492,6 +492,18 @@ var gf = {
                 });
             },
             /**
+             * Themes - Check if any theme is activated and include it
+             */
+            themes: function () {
+                if (gf.storage.get("theme.name")) {
+                    var url = gf.sharedFolder+"/themes/"+gf.storage.get("theme.name")+"/style.css";
+                    var e = $("#gf-theme");
+                    if (e.length && e.attr("href") == url) return true;
+                    e.remove();
+                    $("head").append('<link id="gf-theme" rel="stylesheet" href="' + url + '" media="all" type="text/css">');
+                }
+            },
+            /**
              * Bf4stats ingegration
              */
             bf4stats: function () {
@@ -626,7 +638,27 @@ var gf = {
              * Themes handler
              */
             themes: function () {
-
+                var html = $('<div class="themes">');
+                $.getJSON(gf.sharedFolder+"/themes/list.json", function (themes) {
+                    gf.tools.each(themes, function (k, theme) {
+                        $.getJSON(gf.sharedFolder+"/themes/"+theme+"/manifest.json", function (manifestData) {
+                            var cl = theme == gf.storage.get("theme.name") ? 'active' : "";
+                            html.append(`<div class="entry">
+                                <div class="title"><div class="toggle ${cl}" data-name="${theme}"><div class="handle"></div></div> ${manifestData.name}</div>
+                                <div class="author">By <a href="${manifestData.author_url}" class="author_url" target="_blank">${manifestData.author}</a> - <a href="${manifestData.issue_url}" class="support" target="_blank">Support</a></div>
+                                <div class="description">${gf.tools.escapeHtml(manifestData.description)}</div>
+                            </div>`)
+                        });
+                    });
+                });
+                html.on("click", ".toggle", function () {
+                    // themes are allowed to enable only one at a time, beside development entry
+                    html.find(".toggle").not(this).removeClass("active");
+                    $(this).toggleClass("active");
+                    gf.storage.set("theme.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
+                    gf.frontend.toast("success", gf.translations.get("reload"));
+                });
+                gf.frontend.modal(html);
             }
         }
     },

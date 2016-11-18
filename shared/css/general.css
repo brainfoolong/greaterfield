@@ -147,7 +147,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 9998;
+    z-index: 10000;
     background: rgba(0, 0, 0, 0.7);
     width: 100%;
     height: 100%;
@@ -216,7 +216,7 @@
     left: 0;
     bottom: 0;
     max-height: 0;
-    z-index: 9999;
+    z-index: 10001;
     background: red;
     width: 100%;
     font-family: Roboto, arial;
@@ -282,4 +282,24 @@
 
 #gf-modal .translations .entry textarea{
     height:60px;
+}
+
+#gf-modal .themes .entry {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#gf-modal .themes .entry .title {
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#gf-modal .themes .entry .author {
+    font-size: 80%;
+    color: #a5a5a5;
+}
+
+#gf-modal .themes .entry .description {
+    padding-top: 10px;
 }
