@@ -14,8 +14,8 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/3.jpg" width="33%" />
 
 # What to contribute?
-* Themes - https://github.com/brainfoolong/greaterfield-themes
-* Plugins - Dropped, contribute to the core instead. It's even easier as plugin development.
+* Themes - Dropped, contribute to the core instead. It's even easier as separate themes development.
+* Plugins - Dropped, contribute to the core instead. It's even easier as separate plugin development.
 * Translations - Install extension, Menu => Translations - Those changes will than be submitted to our github repository.
 * Core - Guide coming soon
 
