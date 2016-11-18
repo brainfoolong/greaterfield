@@ -14,7 +14,7 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/3.jpg" width="33%" />
 
 # What to contribute?
-* Themes - Dropped, contribute to the core instead. It's even easier as separate themes development.
+* Themes - https://github.com/brainfoolong/greaterfield/tree/master/shared/themes
 * Plugins - Dropped, contribute to the core instead. It's even easier as separate plugin development.
 * Translations - Install extension, Menu => Translations - Those changes will than be submitted to our github repository.
 * Core - Guide coming soon
@@ -35,5 +35,9 @@ This is the default way for development for this extension. It's super fast and 
 # Coding standards and guide lines
 * JS strict mode
 * ECMA Script 6 support (Template literals, classes, etc...) http://es6-features.org/
-* PSR2 coding standards (as best it can fit for javascript/css, utf-8, crlf line ends, 4 space indents, etc...) http://www.php-fig.org/psr/psr-2/
+* CRLF line endings
+* 4 space indents
+* opening curly braces in same line with other code
+* closing curly braces in new line
+* speaking, short names for variables and methods
 * JSDoc for each method and object variable, as best as possible
