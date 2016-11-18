@@ -35,5 +35,9 @@ This is the default way for development for this extension. It's super fast and 
 # Coding standards and guide lines
 * JS strict mode
 * ECMA Script 6 support (Template literals, classes, etc...) http://es6-features.org/
-* PSR2 coding standards (as best it can fit for javascript/css, utf-8, crlf line ends, 4 space indents, etc...) http://www.php-fig.org/psr/psr-2/
+* CRLF line endings
+* 4 space indents
+* opening curly braces in same line with other code
+* closing curly braces in new line
+* speaking, short names for variables and methods
 * JSDoc for each method and object variable, as best as possible
