@@ -17,7 +17,7 @@ Improvements for Battlefield Web Companion and the Battlefield Forums!
 * Themes - https://github.com/brainfoolong/greaterfield/tree/master/shared/themes
 * Plugins - Dropped, contribute to the core instead. It's even easier as separate plugin development.
 * Translations - Install extension, Menu => Translations - Those changes will than be submitted to our github repository.
-* Core - Guide coming soon
+* Core - https://github.com/brainfoolong/greaterfield/wiki/Core-development
 
 # How to install the development version of this extension?
 This is the default way for development for this extension. It's super fast and agile, every change is instantly testable when you just reload the page.
