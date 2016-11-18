@@ -181,44 +181,6 @@
     padding: 20px;
 }
 
-#gf-modal .plugins-themes .entry {
-    padding-bottom: 10px;
-    padding-top: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#gf-modal .plugins-themes .entry {
-    display: flex;
-}
-
-#gf-modal .plugins-themes .entry .screenshot img {
-    max-width: 150px;
-    max-height: 150px;
-}
-
-#gf-modal .plugins-themes .entry .column {
-    flex-grow: 4;
-    padding-left: 20px;
-}
-
-#gf-modal .plugins-themes .entry .title {
-    font-weight: bold;
-    font-size: 120%;
-}
-
-#gf-modal .plugins-themes .entry .author {
-    font-size: 80%;
-    color: #a5a5a5;
-}
-
-#gf-modal .plugins-themes .entry .description {
-    padding-top: 10px;
-}
-
-#gf-modal .plugins-themes .entry.develop input {
-    margin-top: 20px;
-}
-
 #gf-modal .emblem-gallery .filters{
     margin-bottom: 20px;
 }

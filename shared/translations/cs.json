@@ -4,15 +4,5 @@
     "author" : "Autor",
     "config.section.general": "Obecná vylepšení",
     "config.emblems": "Galerie emblémů",
-    "config.emblems.info": "Tato funkce bude obsahovat galerii emblémů, možnost sdílet svoje emblémy a také vylepšení pro editor emblémů.",
-    "config.themes": "Komunitní vzhledy",
-    "config.themes.info": "Vylepši vzhled této stránky.",
-    "config.plugins": "Komunitní pluginy",
-    "config.plugins.info": "Pokud v rozšíření GreaterField nenalezneš funkce, které potřebuješ, tak ti možná pomůže některý z komunitních pluginů.",
-    "config.plugins.deventry" : "Vývojářská adresa URL",
-    "config.plugins.handler.1" : "Přidej více funkcí pomocí pluginů vytvořených komunitou. Vyznáš se v JavaScriptu a chceš přispět? Navštiv:",
-    "config.plugins.handler.2" : "Zadej adresu URL odkazující na JS soubor do pole níže pro zjednodušení vývoje pluginů v kombinaci se službami jako jsou GitHub nebo Dropbox. Nezapomeň povolit vývojářskou adresu URL pomocí přepínače výše. Po vyplnění adresy stačí obnovit stránku. Pokud chceš svůj plugin přidat do našeho seznamu, navštiv výše zmíněný odkaz :)",
-    "config.themes.deventry" : "Vývojářská adresa URL",
-    "config.themes.handler.1" : "Vylepši vzhled této stránky pomocí vzhledů vytvořených komunitou. Umíš s CSS a chceš vytvořit svůj vlsatní vzhled? Navštiv:",
-    "config.themes.handler.2" : "Zadej adresu URL odkazující na CSS soubor do pole níže pro zjednodušení vývoje vzhledů v kombinaci se službami jako jsou GitHub nebo Dropbox. Nezapomeň povolit vývojářskou adresu URL pomocí přepínače výše. Po vyplnění adresy stačí obnovit stránku. Pokud chceš svůj vzhled přidat do našeho seznamu, navštiv výše zmíněný odkaz :)"
+    "config.emblems.info": "Tato funkce bude obsahovat galerii emblémů, možnost sdílet svoje emblémy a také vylepšení pro editor emblémů."
 }

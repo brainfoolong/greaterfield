@@ -210,57 +210,6 @@ var gf = {
                     }
                 });
             },
-            /**
-             * Plugins - Check if any plugin or development plugin is activated and include it
-             */
-            plugins: function () {
-                var pluginsActivated = [];
-                if (gf.storage.get("plugin.stable.names")) {
-                    gf.tools.each(gf.storage.get("plugin.stable.names"), function (k, v) {
-                        pluginsActivated.push({
-                            name: "stable-" + v,
-                            url: "https://rawgit.com/brainfoolong/greaterfield-plugins/master/plugins/" + v + "/script.js"
-                        });
-                    });
-                }
-                if (gf.storage.get("plugin.development") && gf.storage.get("plugin.development.url", "")) {
-                    pluginsActivated.push({
-                        name: "dev",
-                        url: gf.storage.get("plugin.development.url")
-                    });
-                }
-                gf.tools.each(pluginsActivated, function (k, v) {
-                    var e = $("#gf-plugin-" + v.name);
-                    if (e.length && e.attr("src") == v.url) return true;
-                    $("#gf-plugin-" + v.name).remove();
-                    $("head").append('<script type="text/javascript" defer="defer" src="' + v.url + '" id="gf-plugin-' + v.name + '"></script>');
-                });
-            },
-
-            /**
-             * Themes - Check if any theme or development theme is activated and include it
-             */
-            themes: function () {
-                var themesActivated = [];
-                if (gf.storage.get("theme.stable.name")) {
-                    themesActivated.push({
-                        name: "stable",
-                        url: "https://rawgit.com/brainfoolong/greaterfield-themes/master/themes/" + gf.storage.get("theme.stable.name") + "/style.css"
-                    });
-                }
-                if (gf.storage.get("theme.development") && gf.storage.get("theme.development.url", "")) {
-                    themesActivated.push({
-                        name: "dev",
-                        url: gf.storage.get("theme.development.url")
-                    });
-                }
-                gf.tools.each(themesActivated, function (k, v) {
-                    var e = $("#gf-theme-" + v.name);
-                    if (e.length && e.attr("href") == v.url) return true;
-                    $("#gf-theme-" + v.name).remove();
-                    $("head").append('<link id="gf-theme-' + v.name + '" rel="stylesheet" href="' + v.url + '" media="all" type="text/css">');
-                });
-            },
 
             /**
              * Emblem gallery and improvements
@@ -567,93 +516,6 @@ var gf = {
     },
 
     /**
-     * Some helpfull stuff for plugins
-     */
-    plugins: {
-        /**
-         * Register a plugin
-         * @param {function} pluginHandler
-         */
-        register: function (pluginHandler) {
-            var valid = true;
-            var err = function (msg) {
-                valid = false;
-                console.error("GFPlugin:" + msg);
-            };
-            if (typeof pluginHandler != "function") {
-                err("Cannot register plugin, is not a function callback");
-                return false;
-            }
-            var plugin = pluginHandler();
-            if (
-                typeof plugin != "object" ||
-                typeof plugin.id == "undefined" ||
-                typeof plugin.domchange == "undefined" ||
-                typeof plugin.domchange.events == "undefined" ||
-                typeof plugin.config == "undefined" ||
-                typeof plugin.config.keys == "undefined" ||
-                typeof plugin.translations == "undefined" ||
-                typeof plugin.translations.en == "undefined" ||
-                typeof plugin.translations.en.name == "undefined" ||
-                plugin.id.match(/[^0-9a-z\-]/)
-            ) {
-                err("Cannot register plugin, callback return no valid plugin object");
-                return false;
-            }
-            var pluginPrefix = "plugin." + plugin.id + ".";
-
-            // check config flags
-            gf.tools.each(plugin.config.keys, function (k, v) {
-                if (v.init !== true && v.init !== false) err("Config Flag " + k + " does not have a boolean init key");
-                if (typeof plugin.translations.en["config." + k] == "undefined") err("Config Flag " + k + " have no corresponding EN translation key");
-            });
-            if (!valid) return false;
-
-            // add translations
-            gf.tools.each(plugin.translations, function (locale, values) {
-                var newValues = {};
-                gf.tools.each(values, function (k, v) {
-                    newValues[pluginPrefix + k] = v;
-                });
-                gf.translations.addValues(locale, newValues);
-
-                // add section specific translation#
-                newValues = {};
-                newValues["config.section." + pluginPrefix] = gf.translations.get(pluginPrefix + "name");
-                gf.translations.addValues(locale, newValues);
-            });
-
-            gf.tools.each(plugin.config.keys, function (k, v) {
-                // add config key
-                v.section = pluginPrefix;
-                v.overrideKey = pluginPrefix + "config." + k;
-                gf.config.keys[pluginPrefix + k] = v;
-                // add handlers
-                if (typeof plugin.config.handlers != "undefined" && typeof plugin.config.handlers[k] == "function") {
-                    gf.config.handlers[pluginPrefix + k] = plugin.config.handlers[k];
-                }
-                // add domchange events
-                if (typeof plugin.domchange.events[k] == "function") {
-                    gf.domchange.events[pluginPrefix + k] = plugin.domchange.events[k];
-                }
-            });
-
-            // inject required functions
-            plugin.t = function (key) {
-                return gf.translations.get(pluginPrefix + key);
-            };
-            plugin.storage.get = function (key) {
-                return gf.storage.get(pluginPrefix + key);
-            };
-            plugin.storage.set = function (key, value) {
-                return gf.storage.set(pluginPrefix + key, value);
-            };
-            // trigger init if exist
-            if (typeof plugin.init == "function") plugin.init();
-        }
-    },
-
-    /**
      * Configuration keys and handlers
      */
     config: {
@@ -662,7 +524,6 @@ var gf = {
          */
         keys: {
             "emblems": {"init": true, "section": "general"},
-            "plugins": {"init": true, "section": "general"},
             "themes": {"init": true, "section": "general"},
             "tsviewer": {"init": true, "section": "general"},
             // "bf4stats": {"init": true, "section": "general"},
@@ -762,111 +623,10 @@ var gf = {
                 gf.frontend.modal(html);
             },
             /**
-             * Plugins handler
-             */
-            plugins: function () {
-                gf.config.handlers.themesAndPlugins("plugins");
-            },
-            /**
              * Themes handler
              */
             themes: function () {
-                gf.config.handlers.themesAndPlugins("themes");
-            },
-            /**
-             * Internal function to handle both themes/plugins options
-             * @param mode
-             */
-            themesAndPlugins: function (mode) {
-                if (mode == "plugins") {
-                    var u = {
-                        "singular": "plugin",
-                        "url": "https://github.com/brainfoolong/greaterfield/wiki/Plugin-Development"
-                    };
-                } else {
-                    var u = {
-                        "singular": "theme",
-                        "url": "https://github.com/brainfoolong/greaterfield/wiki/Theme-Development"
-                    };
-                }
-                var html = $(`
-                    <div class="plugins-themes">
-                        ${gf.translations.get("config." + mode + ".handler.1")}<br/>
-                        <a href="${u.url}" target="_blank">${u.url}</a><br/><br/>
-                        <div class="entries">${gf.translations.get("loading")}</div>
-                        <div class="entries">
-                            <div class="entry develop">
-                                    <div class="screenshot"></div>
-                                    <div class="column">
-                                        <div class="title">
-                                            <div class="toggle" data-storage-key="${u.singular}.development"><div class="handle"></div></div> 
-                                            ${gf.translations.get("config." + mode + ".deventry")}
-                                        </div>
-                                        <div class="description">${gf.translations.get("config." + mode + ".handler.2")}
-                                            <input type="text" class="gf-input">
-                                        </div>
-                                    </div>
-                                </div>                                                            
-                            </div>
-                        </div>
-                    </div>
-                `);
-                html.find(".develop input").on("input blur", function () {
-                    var url = this.value;
-                    if ((mode == "themes" && !url.match(/^http.*?\.css/i)) || (mode == "plugins" && !url.match(/^http.*?\.js/i))) {
-                        return true;
-                    }
-                    gf.storage.set(u.singular + ".development.url", url);
-                    gf.frontend.toast("success", gf.translations.get("reload"));
-                }).val(gf.storage.get(u.singular + ".development.url", ""));
 
-                $.getJSON('https://api.github.com/repos/brainfoolong/greaterfield-' + mode + '/contents/' + mode, function (data) {
-                    var t = html.find(".entries").first();
-                    t.text('');
-                    gf.tools.each(data, function (k, dir) {
-                        // ignore base entry
-                        if (dir.name == "base") return true;
-                        // get manifest file
-                        $.getJSON('https://raw.githubusercontent.com/brainfoolong/greaterfield-' + mode + '/master/' + mode + '/' + dir.name + '/manifest.json', function (manifest) {
-                            if (manifest.active === true) {
-                                if (mode == "themes") {
-                                    var cl = dir.name == gf.storage.get(u.singular + ".stable.name") ? 'active' : "";
-                                } else {
-                                    var ids = gf.storage.get(u.singular + ".stable.names", []);
-                                    var cl = $.inArray(dir.name, ids) != -1 ? "active" : "";
-                                }
-                                t.append(`
-                                        <div class="entry">
-                                            <div class="screenshot"><img src="https://raw.githubusercontent.com/brainfoolong/greaterfield-${mode}/master/${mode}/${dir.name}/screenshot.jpg"></div>
-                                            <div class="column">
-                                                <div class="title"><div class="toggle ${cl}" data-name="${dir.name}"><div class="handle"></div></div>  ${manifest.name} v${manifest.version}</div>
-                                                <div class="author">${gf.translations.get("author")}: <a href="https://github.com/${manifest.author}" target="_blank">${manifest.author}</a> - <a href="https://github.com/brainfoolong/greaterfield-plugins/tree/master/plugins/${encodeURIComponent(dir.name)}" target="_blank">Source on GitHub</a></div>
-                                                <div class="description">${manifest.description}</div>
-                                            </div>
-                                        </div>
-                                    `);
-                            }
-                        });
-                    });
-                    t.on("click", ".toggle", function () {
-                        if (mode == "plugins") {
-                            // plugins are allowed to enable multiple at once
-                            $(this).toggleClass("active");
-                            var ids = [];
-                            t.find(".toggle.active").each(function () {
-                                ids.push($(this).attr("data-name"));
-                            });
-                            gf.storage.set(u.singular + ".stable.names", ids);
-                        } else {
-                            // themes are allowed to enable only one at a time, beside development entry
-                            t.find(".toggle").not(this).removeClass("active");
-                            $(this).toggleClass("active");
-                            gf.storage.set(u.singular + ".stable.name", $(this).hasClass("active") ? $(this).attr("data-name") : false);
-                        }
-                        gf.frontend.toast("success", gf.translations.get("reload"));
-                    });
-                });
-                gf.frontend.modal(html);
             }
         }
     },

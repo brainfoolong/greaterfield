@@ -1,0 +1,16 @@
+.gf-companion .background {
+    background-image: url(bg.jpg) !important;
+}
+
+.gf-forums .ea-local-nav-0 .eapl-local-nav__drawer-header.ea-local-nav,
+.gf-forums .ea-local-nav-0.eapl-local-nav-mini .eapl-local-nav__shelf-header.ea-local-nav {
+    background: #0c0500;
+}
+
+.gf-forums .body{
+    background-image: url(bg.jpg) !important;
+}
+
+.gf-forums .DismissMessage.CasualMessage{
+    background-color:rgb(56, 21, 0);
+}
