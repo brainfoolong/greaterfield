@@ -1,7 +1,7 @@
 # Theme Development
 
 ### How to add a new theme?
-* Add a new folder to this themes directory. Mandatory files are `manifest.json` and `style.css`. Just look at a existing theme to know what is mandatory for the `manifest.json`.
+* Add a new folder to this themes directory. Mandatory files are `meta.json` and `style.css`. Just look at a existing theme to know what is mandatory for the `meta.json`.
 * Add your folder theme name to the json array in the `list.json` of this directory (comma separated)
 * Create an issue called "[Theme: xyz] Support ticket", it is the place for everyone to contact you for issues with the theme.
 
