@@ -45,6 +45,7 @@ gf.init = function () {
     // domchange observer
     var observer = new MutationObserver(gf.domchange.onMutation);
     observer.observe(document.body, {childList: true, subtree: true});
+    gf.domchange.onMutation();
 
     // keydown escape or press on close will close greaterfield
     $(document).on("keydown", function (ev) {
@@ -463,9 +464,10 @@ gf.domchange.events.tsviewer = function () {
             });
             menu.find("select").append('<option value="add">Add new instance</option>').val(id);
             var i = $('<iframe>');
-            i.attr("src", gf.homepage+"/ts3viewer.html?id="+id);
+            i.attr("src", gf.homepage + "/ts3viewer.html?id=" + id);
+            i.addClass("tsviewer");
             i.attr("frameborder", 0);
-            i.attr("height", menu.height() - 60);
+            i.attr("scrolling", "no");
             menu.find(".container").html(i);
         };
         menu.find("select").on("change", function () {
@@ -1098,6 +1100,9 @@ gf.tools.escapeHtml = function (string) {
 window.addEventListener("message", function (event) {
     if (event.data && event.data.comeFrom == "gf-backend") {
         gf.backend.receive(event.data);
+    }
+    if (event.data && event.data.comeFrom == "gf-tsviewer") {
+        $("#gf-menu iframe.tsviewer").height(event.data.height);
     }
 }, false);
 
