@@ -1,7 +1,7 @@
 {
     "author": "Author",
     "config.bf4stats": "Bf4stats.com Integration",
-    "config.bf4stats.info": "Will include a very detailed statistic frame on the stats overview page and even more information about weapon and vehicle statistics.",
+    "config.bf4stats.info": "Will include a very detailed statistic frame on the stats overview page.",
     "config.dev": "Greaterfield Developer",
     "config.dev.info": "Settings for greaterfield developers. It's just internal nerd stuff.",
     "config.themes": "Themes",

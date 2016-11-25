@@ -60,6 +60,23 @@ gf.init = function () {
         gf.storage.set($(this).attr("data-storage-key"), $(this).hasClass("active"));
         gf.frontend.toast("success", gf.translations.get("reload"))
     });
+
+    // bind scroll of window to check for display when in viewport
+    var to = null;
+    $(window).on("scroll", function () {
+        clearTimeout(to);
+        to = setTimeout(function () {
+            var top = $(window).scrollTop();
+            var h = $(window).height();
+            var bottom = top + h;
+            $(".gf-viewport-src").each(function () {
+                if ($(this).offset().top <= bottom) {
+                    $(this).attr("src", $(this).attr("data-src"));
+                    $(this).removeClass("gf-viewport-src");
+                }
+            });
+        }, 300);
+    });
 };
 
 /**
@@ -512,22 +529,20 @@ gf.domchange.events.themes = function () {
  * Bf4stats ingegration
  */
 gf.domchange.events.bf4stats = function () {
-    // stats iframe
-    (function () {
-        if (!gf.url.matchUrlParts(["companion", "career", "bf4"]) || gf.url.matchUrlParts(["battlelog"])) return;
-        var data = gf.frontend.getLastJsonRpcCall("Stats.getCareerForOwnedGamesByPersonaId");
-        if (!data || !data.callbackData) return;
-        var username = $(".career-profile div.username");
-        if (!gf.tools.isVirgin(username, "bf4stats")) return;
-        var platform = $(".career-profile span.platform-logo");
-        platform = platform.text().trim().toLowerCase();
-        var url = 'http://bf4stats.com/' + platform + '/' + username.text().trim() + '/bblogframe?timePlayed=' + data.callbackData.gameStats.bf4.timePlayed;
-        $(".row.career-game-section").last().after(`
-            <div class="row no-spacing career-game-section">
-            <iframe src="${url}" style="width:100%; height:400px; overflow-x:hidden; overflow-y:auto; border:0px; margin:0px; padding:0px;" scrollbars="auto"></iframe>
-            </div>
-        `);
-    })();
+    if (!gf.url.matchUrlParts(["companion", "career", "bf4"]) || gf.url.matchUrlParts(["battlelog"])) return;
+    var data = gf.frontend.getLastJsonRpcCall("Stats.getCareerForOwnedGamesByPersonaId");
+    if (!data || !data.callbackData) return;
+    var username = $(".career-profile div.username");
+    if (!gf.tools.isVirgin(username, "bf4stats")) return;
+    var platform = $(".career-profile span.platform-logo");
+    platform = platform.text().trim().toLowerCase();
+    var url = 'https://bf4stats.com/' + platform + '/' + username.text().trim() + '/bblogframe?timePlayed=' + data.callbackData.gameStats.bf4.timePlayed;
+    $(".row.career-game-section").last().after(`
+        <div class="row no-spacing career-game-section stats-iframe"><div class="gr-12 column no-padding">
+        <div class="title">BF4Stats.com</div>
+        <iframe data-src="${url}" scrolling="auto" class="gf-viewport-src"></iframe>
+        </div></div>
+    `);
 };
 
 /**
@@ -542,7 +557,7 @@ gf.config.keys = {
     "emblems": {"init": true, "section": "general"},
     "themes": {"init": true, "section": "general"},
     "tsviewer": {"init": true, "section": "general"},
-    // "bf4stats": {"init": true, "section": "general"},
+    "bf4stats": {"init": true, "section": "general"},
     "translations": {"init": false, "section": "gf"},
     "dev": {"init": false, "section": "gf"}
 };
@@ -603,11 +618,11 @@ gf.config.handlers.translations = function () {
             keys.sort();
             gf.tools.each(keys, function (index, key) {
                 var entry = $(`
-                                <div class="entry" data-key="${key}">
-                                    <div class="original"></div>        
-                                    <div class="locale"><textarea class="gf-input"></textarea></div>   
-                                </div>
-                            `);
+                    <div class="entry" data-key="${key}">
+                        <div class="original"></div>        
+                        <div class="locale"><textarea class="gf-input"></textarea></div>   
+                    </div>
+                `);
                 var v = localeValues[key] || "";
                 entry.find(".original").html(gf.tools.escapeHtml(enValues[key]).replace(/\n/g, "<br/>"));
                 entry.find("textarea").val(v);
