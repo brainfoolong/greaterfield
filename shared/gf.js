@@ -649,7 +649,7 @@ gf.config.handlers.themes = function () {
     var html = $('<div class="themes">');
     $.getJSON(gf.sharedFolder + "/themes/list.json", function (themes) {
         gf.tools.each(themes, function (k, theme) {
-            $.getJSON(gf.sharedFolder + "/themes/" + theme + "/manifest.json", function (manifestData) {
+            $.getJSON(gf.sharedFolder + "/themes/" + theme + "/meta.json", function (manifestData) {
                 var cl = theme == gf.storage.get("theme.name") ? 'active' : "";
                 html.append(`
                     <div class="entry">
