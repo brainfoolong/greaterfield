@@ -250,58 +250,13 @@ gf.domchange.events.emblems = function () {
         });
     })();
 
-    // share to public emblem gallery button
-    (function () {
-        if ($("#gf-emblem-share").length || !gf.url.matchUrlParts(["emblems"])) return;
-        var copyBtn = $(".modal-container button.btn.action-copy");
-        var activeEmblem = $(".emblem-gallery-emblem.selected img").first();
-        if (copyBtn.length && activeEmblem.length) {
-            var btn = $(`<button class="btn-block btn" id="gf-emblem-share">Share to Greaterfield Gallery</button>`);
-            copyBtn.after(btn);
-            btn.on("click", function () {
-                btn.remove();
-                gf.frontend.toast("success", gf.translations.get("loading"));
-                var persona = gf.frontend.getCurrentPersona();
-                gf.frontend.request("Emblems.fetchPrivateEmblem", {
-                    "personaId": persona.personaId,
-                    "platform": persona.platform,
-                    "slot": parseInt(window.location.href.match(/([0-9]+)($|\?)/)[1])
-                }, function (data) {
-                    var img = new Image();
-                    img.crossOrigin = 'Anonymous';
-                    img.onload = function () {
-                        var canvas = document.createElement('CANVAS');
-                        var ctx = canvas.getContext('2d');
-                        var dataURL;
-                        canvas.height = this.height;
-                        canvas.width = this.width;
-                        ctx.drawImage(this, 0, 0);
-                        var dataURL = canvas.toDataURL("image/png");
-                        gf.api.request("emblem.save", {
-                            "image": dataURL,
-                            "objects": data
-                        }, function (code) {
-                            gf.frontend.toast(code == "1" ? "success" : "error", gf.translations.get("emblem.share.callback." + code));
-                        });
-                    };
-                    var src = activeEmblem.attr("src");
-                    img.src = src;
-                    if (img.complete || typeof img.complete == "undefined") {
-                        img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
-                        img.src = src;
-                    }
-                });
-            });
-        }
-    })();
-
     // public emblem gallery button, modal and import
     (function () {
         var e = $("#gf-emblem-public");
         if (e.length || !gf.url.matchUrlParts(["emblems"])) return;
-        e = $("#emblem-preview").next();
+        e = $("#emblemgallery-page .action-menu button").last();
         var btn = $(`<button class="btn-block btn" id="gf-emblem-public">${gf.translations.get("emblem.gallery")}</button>`);
-        e.prepend(btn);
+        e.after(btn);
         btn.on("click", function () {
             var html = $(`
                 <div class="emblem-gallery">
@@ -423,7 +378,7 @@ gf.domchange.events.emblems = function () {
             });
         });
         var importBtn = $(`<button class="btn-block btn" id="gf-emblem-code-import">${gf.translations.get("emblem.code.import")}</button>`);
-        e.prepend(importBtn);
+        e.after(importBtn);
         importBtn.on("click", function () {
             var html = $(`
                 <div class="emblem-code-import">
@@ -455,6 +410,51 @@ gf.domchange.events.emblems = function () {
             });
             gf.frontend.modal(html);
         });
+    })();
+
+    // share to public emblem gallery button
+    (function () {
+        if ($("#gf-emblem-share").length || !gf.url.matchUrlParts(["emblems"])) return;
+        var copyBtn = $("#emblemgallery-page .action-menu button").last();
+        var activeEmblem = $(".emblem-gallery-emblem.selected img").first();
+        if (copyBtn.length && activeEmblem.length) {
+            var btn = $(`<button class="btn-block btn" id="gf-emblem-share">${gf.translations.get("emblem.gallery.share")}</button>`);
+            copyBtn.after(btn);
+            btn.on("click", function () {
+                btn.css("display", "none");
+                gf.frontend.toast("success", gf.translations.get("loading"));
+                var persona = gf.frontend.getCurrentPersona();
+                gf.frontend.request("Emblems.fetchPrivateEmblem", {
+                    "personaId": persona.personaId,
+                    "platform": persona.platform,
+                    "slot": parseInt(window.location.href.match(/([0-9]+)($|\?)/)[1])
+                }, function (data) {
+                    var img = new Image();
+                    img.crossOrigin = 'Anonymous';
+                    img.onload = function () {
+                        var canvas = document.createElement('CANVAS');
+                        var ctx = canvas.getContext('2d');
+                        var dataURL;
+                        canvas.height = this.height;
+                        canvas.width = this.width;
+                        ctx.drawImage(this, 0, 0);
+                        var dataURL = canvas.toDataURL("image/png");
+                        gf.api.request("emblem.save", {
+                            "image": dataURL,
+                            "objects": data
+                        }, function (code) {
+                            gf.frontend.toast(code == "1" ? "success" : "error", gf.translations.get("emblem.share.callback." + code));
+                        });
+                    };
+                    var src = activeEmblem.attr("src");
+                    img.src = src;
+                    if (img.complete || typeof img.complete == "undefined") {
+                        img.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+                        img.src = src;
+                    }
+                });
+            });
+        }
     })();
 };
 

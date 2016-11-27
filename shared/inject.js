@@ -1,6 +1,16 @@
 "use strict";
 
+var injectCount = 0;
 function inject(document, version, folder) {
+
+    // recall if document is not ready
+    if(!document.head && injectCount <= 100){
+        injectCount++;
+        setTimeout(function () {
+            inject(document, version, folder);
+        }, 100);
+        return;
+    }
 
     var el;
 
