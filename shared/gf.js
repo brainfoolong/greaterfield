@@ -168,7 +168,111 @@ gf.domchange.onMutation = function () {
 /**
  * All events that fires on domchange, mostly one for each config key
  */
-gf.domchange.events = {};
+gf.domchange.events = {
+	playerlinks:function () {
+		if (gf.storage.get("config.playerlinks"))
+		{
+			if (!$("#mrfixit-advanced-player-links").length)
+			{
+				var soldierName = $(".column.gr-adapt.username").text();
+				var html = "<div id='mrfixit-advanced-player-links' class='row row-bottom-border no-spacing'>" +
+						   "	<div class='gr-12 column'>" +
+						   "		<div class='row stats stats-row-overview big-titles'>" +
+						   "			<div class='gr-12 column no-padding'>" +
+						   "				<div class='row'>";
+				
+				if (gf.storage.get("config.247FairPlay"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='https://www.247fairplay.com/CheatDetector/" + soldierName + "' target='_blank'>247FairPlay</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.BF4DB"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='http://bf4db.com/' target='_blank'>BF4DB</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.PBScreens"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='https://pbscreens.com/?search&input=" + soldierName + "' target='_blank'>PBScreens</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.Metabans"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='http://metabans.com/search/?phrase=" + soldierName + "' target='_blank'>Metabans</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.iStats"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='https://i-stats.net/index.php?action=pcheck&player=" + soldierName + "&game=BF4' target='_blank'>i-Stats</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.BF1Stats"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='http://BF1Stats.com/' target='_blank'>BF1Stats</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				if (gf.storage.get("config.Google"))
+				{
+					html += "					<div class='gr-3 column item'>" +
+							"						<dl class='align-left stat-highlight'>" +
+							"							<dt class='value'>" +
+							"								<a href='https://www.google.de/#q=%22" + soldierName + "%22' target='_blank'>Google</a>" +
+							"							</dt>" +
+							"						</dl>" +
+							"					</div>";
+				}
+				
+				html += "				</div>" +
+						"			</div>" +
+						"		</div>" +
+						"	</div>" +
+						"</div>";
+				
+				$("#desktop-root > div > div > div > div[class=career-game] > div").first().after(html);
+			}
+		}
+		else
+		{
+			$("#mrfixit-advanced-player-links").remove();
+		}
+	}
+};
 
 /**
  * Update all our toggles with their initial state
@@ -559,7 +663,15 @@ gf.config.keys = {
     "tsviewer": {"init": true, "section": "general"},
     "bf4stats": {"init": true, "section": "general"},
     "translations": {"init": false, "section": "gf"},
-    "dev": {"init": false, "section": "gf"}
+    "dev": {"init": false, "section": "gf"},
+	"playerlinks": {"init": true, "section": "advancedplayerlinks"},
+	"247FairPlay": {"init": true, "section": "advancedplayerlinks"},
+	"BF4DB": {"init": false, "section": "advancedplayerlinks"},
+	"PBScreens": {"init": true, "section": "advancedplayerlinks"},
+	"Metabans": {"init": true, "section": "advancedplayerlinks"},
+	"iStats": {"init": true, "section": "advancedplayerlinks"},
+	"BF1Stats": {"init": false, "section": "advancedplayerlinks"},
+	"Google": {"init": true, "section": "advancedplayerlinks"}
 };
 
 /**
