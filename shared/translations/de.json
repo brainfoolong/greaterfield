@@ -31,5 +31,22 @@
     "translations.text.2": "Leere Felder bedeutet das die EN Übersetzung genommen wird. Lass es leer wenn du keine Übersetzung dafür hast, oder wenn Englisch die beste Anzeige dafür ist.",
     "translations.text.3": "Aktuelle Sprache in die du übersetzt: {lang}",
     "tsviewer.add.instance": "Füge eine neue Teamspeak Viewer Instanz hinzu\nNimm die URL zu dem tsviewer.com Profile oder direkt die ID Nummer",
-    "tsviewer.add.instance.name": "Gib einen Namen für die Instanz ein"
+    "tsviewer.add.instance.name": "Gib einen Namen für die Instanz ein",
+	"config.section.advancedplayerlinks": "Advanced Player Links",
+	"config.playerlinks" : "Advanced Player Links verwenden",
+	"config.playerlinks.info" : "Fügt einige Links auf die Profilseite des Soldaten zur Überprüfung hinzu",
+	"config.247FairPlay" : "247FairPlay anzeigen",
+	"config.247FairPlay.info" : "Für 247FairPlay wird ein Link hinzugefügt",
+	"config.BF4DB" : "BF4DB anzeigen",
+	"config.BF4DB.info" : "Für BF4DB wird ein Link hinzugefügt",
+	"config.PBScreens" : "PBScreens anzeigen",
+	"config.PBScreens.info" : "Für PBScreens wird ein Link hinzugefügt",
+	"config.Metabans" : "Metabans anzeigen",
+	"config.Metabans.info" : "Für Metabans wird ein Link hinzugefügt",
+	"config.iStats" : "i-Stats anzeigen",
+	"config.iStats.info" : "Für i-Stats wird ein Link hinzugefügt",
+	"config.BF1Stats" : "BF1Stats anzeigen",
+	"config.BF1Stats.info" : "Für BF1Stats wird ein Link hinzugefügt",
+	"config.Google" : "Google anzeigen",
+	"config.Google.info" : "Für Google wird ein Link hinzugefügt"
 }
