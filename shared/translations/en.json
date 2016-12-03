@@ -43,21 +43,6 @@
     "translations.lang.error": "EN is not editable - It's the root source for translations",
     "tsviewer.add.instance": "Add a new instance for a Teamspeak viewer\nAdd the URL to your tsviewer.com teamspeak profile, or just add the ID number",
     "tsviewer.add.instance.name": "Enter a name for your instance",
-	"config.section.advancedplayerlinks": "Advanced Player Links",
-	"config.playerlinks" : "Use Advanced Player Links",
-	"config.playerlinks.info" : "Add some links to the profile page from a soldier for checking",
-	"config.247FairPlay" : "Show 247FairPlay",
-	"config.247FairPlay.info" : "Add a link to 247FairPlay",
-	"config.BF4DB" : "Show BF4DB",
-	"config.BF4DB.info" : "Add a link to BF4DB",
-	"config.PBScreens" : "Show PBScreens",
-	"config.PBScreens.info" : "Add a link to PBScreens",
-	"config.Metabans" : "Show Metabans",
-	"config.Metabans.info" : "Add a link to Metabans",
-	"config.iStats" : "Show i-Stats",
-	"config.iStats.info" : "Add a link to i-Stats",
-	"config.BF1Stats" : "Show BF1Stats",
-	"config.BF1Stats.info" : "Add a link to BF1Stats",
-	"config.Google" : "Show Google",
-	"config.Google.info" : "Add a link to Google"
+	"config.playerlinks" : "Advanced Player Links",
+	"config.playerlinks.info" : "Add some helpful links to the profile page from a soldier"
 }
