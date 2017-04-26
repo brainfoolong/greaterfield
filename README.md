@@ -3,9 +3,11 @@
 # Greaterfield
 Improvements for Battlefield Web Companion and the Battlefield Forums!
 
+# Development discontinued
+Development for this extension has been discontinued. Thanks for all that helped here.
+
 # Downloads - Beta
 * Google Chrome: https://chrome.google.com/webstore/detail/gnpnfbnogbhgbcgejjdanillfkoljdlg
-* Firefox: In Mozilla's validation progress
 
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/1.jpg" width="33%" />
 <img src="https://raw.githubusercontent.com/brainfoolong/greaterfield/gh-pages/images/screenshots/2.jpg" width="33%" />
